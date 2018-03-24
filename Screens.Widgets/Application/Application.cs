@@ -13,17 +13,17 @@ namespace Screens
     public class Application
     {
         public event AppMessageEventHandler AppMessage;
-
         public delegate void AppMessageEventHandler(Application sender, AppMessageEventArgs e);
 
         private ITerminal _terminal;
-        internal ITerminal Terminal
-        {
-            get
-            {
-                return _terminal;
-            }
-        }
+        internal ITerminal Terminal => _terminal;
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        [ThreadStatic]
+        private static Application _currentApp = null;
+        public static Application Current => _currentApp;
 
         private MessageQueue _messageQueue;
         private Buffer current_buffer;
@@ -33,9 +33,7 @@ namespace Screens
             _terminal = terminal;
             _messageQueue = new MessageQueue();
         }
-
-
-
+        
         public Size ScreenSize { get; set; }
 
         private bool _blackAndWhite = false;
@@ -52,15 +50,13 @@ namespace Screens
             }
         }
 
-
-
-
+        
         public void Run(Form f)
         {
             _terminal.SetScreenSize(ScreenSize.Width, ScreenSize.Height);
 
             start:
-            ;
+            
             try
             {
                 _mainForm = f;
@@ -68,12 +64,12 @@ namespace Screens
                 _show(f);
 
                 _terminal.Clear();
-
                 PerformPaint();
-
+                                
+                // Start the message loop
                 Message msg = null;
-
-                // Start the message loop 
+                _currentApp = this;
+ 
                 while ((_messageQueue.GetMessage(ref msg)))
                 {
                     if (msg.MessageType == WM_MessageType.WM_PAINT)
