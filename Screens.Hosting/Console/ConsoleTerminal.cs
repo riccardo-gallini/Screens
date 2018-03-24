@@ -24,17 +24,7 @@ namespace Screens.Hosting
         {
             Console.CursorVisible = false;
         }
-
-        public void ResetBuffer()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void SendBuffer(Buffer current_buffer)
-        {
-            throw new NotImplementedException();
-        }
-
+        
         public void SetBackGroundColor(ConsoleColor back)
         {
             if (!BlackAndWhite) Console.BackgroundColor = back;

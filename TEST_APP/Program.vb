@@ -14,25 +14,9 @@ Module Program
         'decoder.Decode(New Byte() {27, 91, 66, 27, 79, 80, 27, 11, 27, 91, 66})
         'decoder.Decode(New Byte() {27, 91, 27, 91, 66, 65, 65})
 
+        Dim host = New ConsoleHost()
 
-        'Dim host = New ConsoleHost()
-
-        'host.Run(
-        '        Sub(application)
-        '            application.ScreenSize = New Size(29, 20)
-        '            application.BlackAndWhite = False
-        '            application.Run(New MenuProdottiFiniti())
-        '        End Sub)
-
-        'host.StartHost()
-
-        'Do
-        '    Threading.Thread.Sleep(20000)
-        'Loop
-
-        Dim host = New TelnetHost()
-
-        AddHandler host.SessionConnected, AddressOf handleNewSession
+        'AddHandler host.SessionConnected, AddressOf handleNewSession
 
         host.Run(
                 Sub(application)
@@ -43,12 +27,32 @@ Module Program
 
         host.StartHost()
 
-        Console.WriteLine("SERVER RUNNING!!")
+        'Console.WriteLine("SERVER RUNNING!!")
 
         Do
             Threading.Thread.Sleep(20000)
 
         Loop
+
+        'Dim host = New TelnetHost()
+
+        'AddHandler host.SessionConnected, AddressOf handleNewSession
+
+        'host.Run(
+        '        Sub(application)
+        '            application.ScreenSize = New Size(29, 20)
+        '            application.BlackAndWhite = False
+        '            application.Run(New MenuProdottiFiniti())
+        '        End Sub)
+
+        'host.StartHost()
+
+        'Console.WriteLine("SERVER RUNNING!!")
+
+        'Do
+        '    Threading.Thread.Sleep(20000)
+
+        'Loop
 
     End Sub
 
