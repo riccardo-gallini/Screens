@@ -5,6 +5,10 @@ VisualStudioVersion = 15.0.27428.2002
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Screens.Hosting", "Screens.Hosting\Screens.Hosting.csproj", "{B77CD1B9-8887-4A12-B0ED-E4BD55D17B50}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Screens.Widgets", "Screens.Widgets\Screens.Widgets.csproj", "{518DA91C-6F45-4E0F-937F-216C7CA3F45B}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "TEST_APP", "TEST_APP\TEST_APP.vbproj", "{D4098352-7BD7-47FE-8F8B-3556E973A2E3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{B77CD1B9-8887-4A12-B0ED-E4BD55D17B50}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B77CD1B9-8887-4A12-B0ED-E4BD55D17B50}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B77CD1B9-8887-4A12-B0ED-E4BD55D17B50}.Release|Any CPU.Build.0 = Release|Any CPU
+		{518DA91C-6F45-4E0F-937F-216C7CA3F45B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{518DA91C-6F45-4E0F-937F-216C7CA3F45B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{518DA91C-6F45-4E0F-937F-216C7CA3F45B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{518DA91C-6F45-4E0F-937F-216C7CA3F45B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4098352-7BD7-47FE-8F8B-3556E973A2E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4098352-7BD7-47FE-8F8B-3556E973A2E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4098352-7BD7-47FE-8F8B-3556E973A2E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4098352-7BD7-47FE-8F8B-3556E973A2E3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
