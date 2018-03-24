@@ -35,7 +35,7 @@ namespace Screens
             _inner.Change(0, Interval);
         }
 
-        public void Stp()
+        public void Stop()
         {
             _inner.Change(System.Threading.Timeout.Infinite, System.Threading.Timeout.Infinite);
         }
