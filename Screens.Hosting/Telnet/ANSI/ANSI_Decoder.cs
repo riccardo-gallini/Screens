@@ -20,7 +20,10 @@ namespace Screens.Hosting
         public void Decode(byte[] data)
         {
             foreach(byte b in data)
-                parser.Post(b);
+            {
+                if (b < 0xF0) parser.Post(b);
+            }
+                
         }
 
         #region SEQUENCES DB

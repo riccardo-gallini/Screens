@@ -12,25 +12,29 @@ namespace Screens
     {
         private ConcurrentQueue<Message> queue;
         private AutoResetEvent message_waiter;
+        private Application owningApp;
 
-        public MessageQueue()
+        public MessageQueue(Application app)
         {
+            owningApp = app;
             queue = new ConcurrentQueue<Message>();
             message_waiter = new AutoResetEvent(false);
         }
 
         public bool GetMessage(ref Message msg)
         {
-
-            // can be called only from the application thread
-            // TODO: check this is the right thread
+            if (Application.Current != owningApp)
+            {
+                throw new ThreadStateException("<DEBUG> message loop not running on this thread!");
+            }
 
             while (true)
             {
-                message_waiter.WaitOne();
 
-                if (queue.TryDequeue(out msg))
-                    return true;
+                if (queue.TryDequeue(out msg)) return true;
+
+                message_waiter.WaitOne();
+            
             }
 
         }

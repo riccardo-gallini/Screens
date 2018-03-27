@@ -31,7 +31,7 @@ namespace Screens
         public Application(ITerminal terminal)
         {
             _terminal = terminal;
-            _messageQueue = new MessageQueue();
+            _messageQueue = new MessageQueue(this);
         }
         
         public Size ScreenSize { get; set; }
@@ -83,7 +83,7 @@ namespace Screens
                     else if (msg.MessageType == WM_MessageType.WM_SHOW_FORM)
                     {
                         var form = (Form)msg.Parameter;
-                        Show(form);
+                        _show(form);
                     }
                     else if (msg.MessageType == WM_MessageType.WM_RESIZE)
                         ActiveForm.OnResize(new EventArgs());

@@ -503,7 +503,7 @@ namespace Screens
         {
             _isInvalidated = true;
             var _form = FindForm();
-            if (_form != null) _form._isInvalidated = true;
+            if (_form != null) _form.IsInvalidated = true;
             OnInvalidated(EventArgs.Empty);
         }
 

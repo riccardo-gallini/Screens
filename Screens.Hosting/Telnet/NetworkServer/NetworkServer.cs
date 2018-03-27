@@ -68,12 +68,12 @@ namespace Screens.Hosting
         {
             try
             {
-                Socket oldSocket = (Socket)result.AsyncState;
+                Socket _serverSocket = (Socket)result.AsyncState;
 
-                Socket newSocket = oldSocket.EndAccept(result);
+                Socket clientSocket = _serverSocket.EndAccept(result);
 
                 int clientID = connections.Count + 1;
-                ClientConnection conn = new ClientConnection(clientID, (IPEndPoint)newSocket.RemoteEndPoint, newSocket);
+                ClientConnection conn = new ClientConnection(clientID, (IPEndPoint)clientSocket.RemoteEndPoint, clientSocket);
                 connections.Add(clientID, conn);
 
                 // Do Echo
@@ -90,7 +90,7 @@ namespace Screens.Hosting
 
                 OnClientConnected(conn);
 
-                    serverSocket.BeginAccept(new AsyncCallback(handleIncomingConnection), serverSocket);
+                this.serverSocket.BeginAccept(new AsyncCallback(handleIncomingConnection), this.serverSocket);
                 
             }
 
