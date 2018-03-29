@@ -48,7 +48,7 @@ namespace Screens.Hosting
 
         public void ResetBuffer()
         {
-            BufferManager.ResetBuffer();
+            BufferManager.ResetBuffer(ScreenSize);
         }
 
         public Buffer CurrentBuffer

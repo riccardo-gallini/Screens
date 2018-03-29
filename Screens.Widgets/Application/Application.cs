@@ -184,6 +184,8 @@ namespace Screens
 
                 _activeForm = f;
 
+                Terminal.ResetBuffer();  //TODO: check here'!?!
+
                 f.OnActivated(EventArgs.Empty);
                 f.Invalidate();
                 if (f.FocusedControl == null)
@@ -191,8 +193,7 @@ namespace Screens
                     if (f.Controls.TabIndexList.Count > 0)
                         f.FocusedControl = f.Controls.TabIndexList.First.Value;
                 }
-
-                Terminal.ResetBuffer();  //TODO: here or at [[[XXX]]]?
+                             
             }
         }
 

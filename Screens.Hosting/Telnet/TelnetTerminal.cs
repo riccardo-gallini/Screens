@@ -22,13 +22,11 @@ namespace Screens.Hosting
             Session.SendToClient(msg);
         }
 
-        public void ProcessData(byte[] data)
+        internal void ProcessData(byte[] data)
         {
             decoder.Decode(data);
         }
-
-
-
+        
         public override void Beep() 
         {
             SendToClient(ANSI_Encoder.Beep());

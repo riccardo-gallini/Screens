@@ -13,8 +13,6 @@ namespace Screens.Hosting
         public Buffer CurrentBuffer { get; private set; }
         public Buffer LastBuffer { get; private set; }
 
-        public Size ScreenSize { get; set; }
-
         public BufferManager(Terminal terminal)
         {
             Terminal = terminal;
@@ -82,9 +80,14 @@ namespace Screens.Hosting
             return false;
         }
 
-        public void ResetBuffer()
+        public void ResetBuffer(Size size)
         {
-            if (CurrentBuffer != null)
+            if (CurrentBuffer == null)
+            {
+                CurrentBuffer = new Buffer(size);
+                LastBuffer = new Buffer(size);
+            }
+            else
             {
                 LastBuffer.Clear();
                 CurrentBuffer.Clear();
