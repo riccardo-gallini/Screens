@@ -73,24 +73,6 @@ Public Class MenuProdottiFiniti
         my_timer.Interval = 1000
         Me.Controls.Add(my_timer)
 
-        'btBlocco.Name = "btBlocco"
-        'btBlocco.Text = "&7 BLOCCO"
-        'btBlocco.Top = 14
-        'btBlocco.Left = 1
-        'btBlocco.Height = 1
-        'btBlocco.Width = 24
-        'btBlocco.TabIndex = 6
-        'Me.Controls.Add(btBlocco)
-
-        'btSBlocco.Name = "btblocco"
-        'btSBlocco.Text = "&8 SBLOCCO"
-        'btSBlocco.Top = 16
-        'btSBlocco.Left = 1
-        'btSBlocco.Height = 1
-        'btSBlocco.Width = 24
-        'btSBlocco.TabIndex = 6
-        'Me.Controls.Add(btSBlocco)
-
         btEsci.Name = "btEsci"
         btEsci.Text = "<< MENU PRINCIPALE"
         btEsci.Top = 18

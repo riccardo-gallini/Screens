@@ -70,7 +70,7 @@ namespace Screens.Hosting
             KeyPressed?.Invoke(key);
         }
 
-        public void Close()
+        public void SendCloseRequest()
         {
             Closed?.Invoke();
         }

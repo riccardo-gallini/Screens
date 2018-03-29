@@ -86,7 +86,7 @@ namespace Screens.Hosting
         private void _clientDisconnected(NetworkConnection c)
         {
             var sess = _sessions[c.Id];
-            sess.Terminal.Close();
+            sess.Terminal.SendCloseRequest();
 
             var e = new SessionEventArgs(sess);
             SessionDisconnected(this, e);
