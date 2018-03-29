@@ -82,7 +82,7 @@ namespace Screens.Hosting
 
         public void ResetBuffer(Size size)
         {
-            if (CurrentBuffer == null)
+            if (CurrentBuffer == null || CurrentBuffer.Size != size)
             {
                 CurrentBuffer = new Buffer(size);
                 LastBuffer = new Buffer(size);
