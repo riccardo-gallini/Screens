@@ -7,21 +7,21 @@ namespace Screens.Hosting
     public class ANSI_Decoder
     {
         
-        private SequenceParser<byte, KeyInfo> parser;
+        public SequenceParser<byte, KeyInfo> Parser { get; }
         public Action<KeyInfo> KeyReady;
 
         public ANSI_Decoder()
         {
-            parser = new SequenceParser<byte, KeyInfo>(ANSI_Decoder.SequencesDB);
-            parser.FoundMatch = (key) => KeyReady?.Invoke(key);
-            parser.FallBack = DecoderFallback; 
+            Parser = new SequenceParser<byte, KeyInfo>(ANSI_Decoder.SequencesDB);
+            Parser.FoundMatch = (key) => KeyReady?.Invoke(key);
+            Parser.FallBack = DecoderFallback; 
         }
 
         public void Decode(byte[] data)
         {
             foreach(byte b in data)
             {
-                if (b < 0xF0) parser.Post(b);
+                if (b < 0xF0) Parser.Post(b);
             }
                 
         }

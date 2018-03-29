@@ -8,13 +8,13 @@ namespace Screens.Hosting
 {
     public class TelnetTerminal : Terminal
     {
-        private ANSI_Decoder decoder;
-        public Session Session { get; internal set; }
+        public ANSI_Decoder ANSI_Decoder { get; }
+        public Session Session { get; }
         
-        internal TelnetTerminal()
+        internal TelnetTerminal(Session session)
         {
-            decoder = new ANSI_Decoder();
-            decoder.KeyReady = (key) => this.SendKey(key);
+            ANSI_Decoder = new ANSI_Decoder();
+            ANSI_Decoder.KeyReady = (key) => this.SendKey(key);
         }
 
         private void SendToClient(string msg)
@@ -24,7 +24,7 @@ namespace Screens.Hosting
 
         internal void ProcessData(byte[] data)
         {
-            decoder.Decode(data);
+            ANSI_Decoder.Decode(data);
         }
         
         public override void Beep() 

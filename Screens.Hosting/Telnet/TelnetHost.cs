@@ -60,9 +60,8 @@ namespace Screens.Hosting
             if (!e.RefuseConnection)
             {
                 
-                var term = new TelnetTerminal();
+                var term = new TelnetTerminal(sess);
                 sess.Terminal = term;
-                term.Session = sess;
                 
                 Task.Factory.StartNew(() => Main(term)); 
 
