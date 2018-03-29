@@ -15,8 +15,7 @@ namespace Screens.Hosting
         public NetworkServer Server { get; }
 
         public Action<Terminal> Main;
-        public Action<Terminal> End;
-        
+                
         public delegate void SessionConnectedEventHandler(TelnetHost h, SessionEventArgs e);
         public event SessionConnectedEventHandler SessionConnected = null;
 
@@ -87,7 +86,7 @@ namespace Screens.Hosting
         private void _clientDisconnected(NetworkConnection c)
         {
             var sess = _sessions[c.Id];
-            End?.Invoke(sess.Terminal);
+            sess.Terminal.Close();
 
             var e = new SessionEventArgs(sess);
             SessionDisconnected(this, e);
@@ -102,7 +101,7 @@ namespace Screens.Hosting
             Server.Start();
         }
 
-        public void Kick_All()
+        public void KickAll()
         {
             foreach (var sess in _sessions.Values.ToList())  //make a copy??
             {

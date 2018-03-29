@@ -1,35 +1,51 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Screens.Hosting
 {
-    public class ConsoleHost
+    public interface IHost
+    {
+        Action<Terminal> Main { get; set; }
+        void StartHost();
+        void StopHost();
+    }
+
+    public class ConsoleHost :IHost
     {
 
-        public Action<Terminal> Main;
+        public Action<Terminal> Main { get; set; }
+        
+        private bool cont;
+        private Task console_listener;
 
         public void StartHost()
         {
             if (Main == null) throw new InvalidOperationException(" 'Main' was null!");
 
             var terminal = new ConsoleTerminal();
-                     
-            Task.Factory.StartNew(
-                () =>
-                {
-                    while (true)
-                    {
-                        var win32_console_key = Console.ReadKey();
-                        terminal.SendKey(keyInfo(win32_console_key));
-                    }
 
-                }
+            cont = true;
+
+            console_listener = 
+                Task.Factory.StartNew(
+                    () =>
+                    {
+                        while (cont)
+                        {
+                            var win32_console_key = Console.ReadKey();
+                            terminal.SendKey(keyInfo(win32_console_key));
+                        }
+                    }
                 
             );
                         
             Main(terminal);
+            terminal.Close();
+        }
+
+        public void StopHost()
+        {
+            cont = false;
         }
 
         private KeyInfo keyInfo(ConsoleKeyInfo win32_key)

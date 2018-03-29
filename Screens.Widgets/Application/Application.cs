@@ -35,7 +35,10 @@ namespace Screens
         public Application(Terminal terminal)
         {
             Terminal = terminal;
+
             Terminal.KeyPressed = (key) => this.SendKey(key);
+            Terminal.Closed = () => this.Exit();
+
             _messageQueue = new MessageQueue(this);
         }
         
@@ -64,7 +67,7 @@ namespace Screens
             
             try
             {
-                _mainForm = f;
+                MainForm = f;
 
                 _show(f);
 
@@ -145,7 +148,7 @@ namespace Screens
 
         private void _show(Form f)
         {
-            if (_mainForm == null)
+            if (MainForm == null)
             {
                 Run(f);
                 return;
@@ -168,12 +171,12 @@ namespace Screens
 
         internal void SetActiveForm(Form f)
         {
-            if (_activeForm != f)
+            if (ActiveForm != f)
             {
-                if (_activeForm != null)
-                    _activeForm.OnDeactivate(EventArgs.Empty);
+                if (ActiveForm != null)
+                    ActiveForm.OnDeactivate(EventArgs.Empty);
 
-                _activeForm = f;
+                ActiveForm = f;
 
                 Terminal.ResetBuffer();
 
@@ -188,23 +191,9 @@ namespace Screens
             }
         }
 
-        private Form _activeForm;
-        public Form ActiveForm
-        {
-            get
-            {
-                return _activeForm;
-            }
-        }
-
-        private Form _mainForm;
-        public Form MainForm
-        {
-            get
-            {
-                return _mainForm;
-            }
-        }
+        public Form ActiveForm { get; private set; }
+        public Form MainForm { get; private set; }
+        
 
         private Stack<Form> _openForms = new Stack<Form>();
         public IList<Form> OpenForms
@@ -217,7 +206,6 @@ namespace Screens
 
         public void Exit()
         {
-
             // send wm_quit
             _messageQueue.PostMessage(Message.WM_QUIT());
         }

@@ -9,6 +9,7 @@ namespace Screens.Hosting
     public abstract class Terminal
     {
         public Action<KeyInfo> KeyPressed;
+        public Action Closed;
 
         public bool BlackAndWhite { get; set; }
         public Size ScreenSize { get; set; }
@@ -67,6 +68,11 @@ namespace Screens.Hosting
         public void SendKey(KeyInfo key)
         {
             KeyPressed?.Invoke(key);
+        }
+
+        public void Close()
+        {
+            Closed?.Invoke();
         }
  
     }

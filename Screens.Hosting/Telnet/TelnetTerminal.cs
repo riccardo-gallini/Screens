@@ -13,6 +13,8 @@ namespace Screens.Hosting
         
         internal TelnetTerminal(Session session)
         {
+            Session = session;
+
             ANSI_Decoder = new ANSI_Decoder();
             ANSI_Decoder.KeyReady = (key) => this.SendKey(key);
         }
