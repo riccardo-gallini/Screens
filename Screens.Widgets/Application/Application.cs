@@ -17,7 +17,7 @@ namespace Screens
         [ThreadStatic] private static Application _currentApp = null;
         public static Application Current => _currentApp;
 
-        private MessageQueue _messageQueue;
+        public MessageQueue MessageQueue { get; }
 
         public Size ScreenSize
         {
@@ -36,10 +36,11 @@ namespace Screens
         {
             Terminal = terminal;
 
+            //hook Terminal with events from 'outside'
             Terminal.KeyPressed = (key) => this.SendKey(key);
             Terminal.Closed = () => this.Exit();
 
-            _messageQueue = new MessageQueue(this);
+            MessageQueue = new MessageQueue(this);
         }
         
 
@@ -78,7 +79,7 @@ namespace Screens
                 Message msg = null;
                 _currentApp = this;
  
-                while ((_messageQueue.GetMessage(ref msg)))
+                while ((MessageQueue.GetMessage(ref msg)))
                 {
                     if (msg.MessageType == WM_MessageType.WM_KEY)
                     {
@@ -143,7 +144,7 @@ namespace Screens
 
         public void Show(Form f)
         {
-            _messageQueue.PostMessage(Message.WM_SHOW_FORM(f));
+            MessageQueue.PostMessage(Message.WM_SHOW_FORM(f));
         }
 
         private void _show(Form f)
@@ -204,11 +205,7 @@ namespace Screens
             }
         }
 
-        public void Exit()
-        {
-            // send wm_quit
-            _messageQueue.PostMessage(Message.WM_QUIT());
-        }
+
 
         private void PerformPaint()
         {
@@ -268,14 +265,20 @@ namespace Screens
         {
         }
 
+        public void Exit()
+        {
+            // send wm_quit
+            MessageQueue.PostMessage(Message.WM_QUIT());
+        }
+
         public void SendKey(KeyInfo key_info)
         {
-            _messageQueue.PostMessage(Message.WM_KEY(key_info));
+            MessageQueue.PostMessage(Message.WM_KEY(key_info));
         }
 
         public void SendTimerTick(Timer t)
         {
-            _messageQueue.PostMessage(Message.WM_TIMER(t));
+            MessageQueue.PostMessage(Message.WM_TIMER(t));
         }
 
         public void Beep()

@@ -9,14 +9,11 @@ namespace Screens
     
     public enum WM_MessageType
     {
-        WM_PAINT = 1,
-        WM_TIMER = 2,
-        WM_KEY = 3,
-        WM_SHOW_FORM = 4,
-        WM_RESIZE = 5,
-        WM_EXCEPTION = 6,
-        WM_APP_MSG = 7,
-        WM_QUIT = 8
+        WM_TIMER,
+        WM_KEY,
+        WM_SHOW_FORM,
+        WM_RESIZE,
+        WM_QUIT
     }
     
     public class Message
@@ -34,37 +31,13 @@ namespace Screens
             MessageType = message_type;
             Parameter = par;
         }
-
-
-
-        public static Message WM_PAINT()
-        {
-            return new Message(WM_MessageType.WM_PAINT);
-        }
-        public static Message WM_TIMER(Timer timer)
-        {
-            return new Message(WM_MessageType.WM_TIMER, timer);
-        }
-        public static Message WM_KEY(KeyInfo key_info)
-        {
-            return new Message(WM_MessageType.WM_KEY, key_info);
-        }
-        public static Message WM_SHOW_FORM(Form form)
-        {
-            return new Message(WM_MessageType.WM_SHOW_FORM, form);
-        }
-        public static Message WM_RESIZE(Size size)
-        {
-            return new Message(WM_MessageType.WM_RESIZE, size);
-        }
-        public static Message WM_EXCEPTION(Exception ex)
-        {
-            return new Message(WM_MessageType.WM_EXCEPTION, ex);
-        }
-        public static Message WM_QUIT()
-        {
-            return new Message(WM_MessageType.WM_QUIT);
-        }
+               
+        public static Message WM_TIMER(Timer timer) => new Message(WM_MessageType.WM_TIMER, timer);
+        public static Message WM_KEY(KeyInfo key_info) => new Message(WM_MessageType.WM_KEY, key_info);
+        public static Message WM_SHOW_FORM(Form form) => new Message(WM_MessageType.WM_SHOW_FORM, form);
+        public static Message WM_RESIZE(Size size) => new Message(WM_MessageType.WM_RESIZE, size);
+        public static Message WM_EXCEPTION(Exception ex) => new Message(WM_MessageType.WM_EXCEPTION, ex);
+        public static Message WM_QUIT() => new Message(WM_MessageType.WM_QUIT);
     }
 
 }

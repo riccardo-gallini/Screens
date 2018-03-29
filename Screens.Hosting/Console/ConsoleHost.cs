@@ -40,7 +40,7 @@ namespace Screens.Hosting
             );
                         
             Main(terminal);
-            terminal.Close();
+            terminal.SendCloseRequest();
         }
 
         public void StopHost()
