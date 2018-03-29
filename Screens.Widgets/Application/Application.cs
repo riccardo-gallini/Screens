@@ -11,16 +11,10 @@ namespace Screens
     
     public class Application
     {
-        public event AppMessageEventHandler AppMessage;
-        public delegate void AppMessageEventHandler(Application sender, AppMessageEventArgs e);
-
         public Terminal Terminal { get; set; }
         
-        /// <summary>
-        /// 
-        /// </summary>
-        [ThreadStatic]
-        private static Application _currentApp = null;
+        
+        [ThreadStatic] private static Application _currentApp = null;
         public static Application Current => _currentApp;
 
         private MessageQueue _messageQueue;
@@ -83,10 +77,7 @@ namespace Screens
  
                 while ((_messageQueue.GetMessage(ref msg)))
                 {
-                    if (msg.MessageType == WM_MessageType.WM_PAINT)
-                    {
-                    }
-                    else if (msg.MessageType == WM_MessageType.WM_KEY)
+                    if (msg.MessageType == WM_MessageType.WM_KEY)
                     {
                         var key_info = (KeyInfo)msg.Parameter;
                         ActiveForm.SendKey(key_info);
@@ -97,14 +88,14 @@ namespace Screens
                         _show(form);
                     }
                     else if (msg.MessageType == WM_MessageType.WM_RESIZE)
+                    {
                         ActiveForm.OnResize(new EventArgs());
+                    }
                     else if (msg.MessageType == WM_MessageType.WM_TIMER)
                     {
                         var timer = (Timer)msg.Parameter;
                         timer.OnTick(EventArgs.Empty);
                     }
-                    else if (msg.MessageType == WM_MessageType.WM_APP_MSG)
-                        this.OnAppMessage(new AppMessageEventArgs(this, msg.Parameter));
                     else if (msg.MessageType == WM_MessageType.WM_QUIT)
                         break;
 
@@ -299,26 +290,11 @@ namespace Screens
             _messageQueue.PostMessage(Message.WM_TIMER(t));
         }
 
-        public void SendAppMessage(object data)
-        {
-            _messageQueue.PostMessage(Message.WM_APP_MSG(data));
-        }
-
-
-
         public void Beep()
         {
             Terminal.Beep();
         }
 
-
-
-       
-
-        protected virtual void OnAppMessage(AppMessageEventArgs e)
-        {
-            AppMessage?.Invoke(this, e);
-        }
     }
 
 }

@@ -6,10 +6,7 @@ using System.Drawing;
 
 namespace Screens
 {
-
-
-
-
+    
     public enum WM_MessageType
     {
         WM_PAINT = 1,
@@ -21,8 +18,7 @@ namespace Screens
         WM_APP_MSG = 7,
         WM_QUIT = 8
     }
-
-
+    
     public class Message
     {
         public WM_MessageType MessageType { get; }
@@ -64,10 +60,6 @@ namespace Screens
         public static Message WM_EXCEPTION(Exception ex)
         {
             return new Message(WM_MessageType.WM_EXCEPTION, ex);
-        }
-        public static Message WM_APP_MSG(object data)
-        {
-            return new Message(WM_MessageType.WM_APP_MSG, data);
         }
         public static Message WM_QUIT()
         {
