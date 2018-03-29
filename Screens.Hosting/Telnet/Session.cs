@@ -42,8 +42,5 @@ namespace Screens.Hosting
             Host.Server.KickClient(Connection);
         }
 
-
-
-
     }
 }

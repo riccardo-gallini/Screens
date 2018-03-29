@@ -7,7 +7,6 @@ using System.Drawing;
 namespace Screens
 {
 
-
     public class Button : Control
     {
         public Button() : base()
@@ -90,7 +89,7 @@ namespace Screens
 
             if (pos != -1 && pos < text.Length)
             {
-                this.ClickShortCut = text[pos+1];  //TODO: review if pos+1 ???? was Substring(pos+1,1)
+                this.ClickShortCut = text[pos + 1];  //TODO: review if pos+1 ???? was Substring(pos+1,1)
                 base.HasShortCut = true;
                 new_text = text.Remove(pos, 1);
             }
@@ -130,9 +129,9 @@ namespace Screens
             }
             else
 
-                // paint button in a black & white environment (es. narrow band)
+            // paint button in a black & white environment (es. narrow band)
 
-                if (this.Focused)
+            if (this.Focused)
             {
                 // if focused, draw with '[' ']' around
                 e.Buffer.Fill(' ', new Rectangle(0, 0, Size.Width, 1), this.ForeColor, this.BackColor);

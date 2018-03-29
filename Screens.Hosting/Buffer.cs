@@ -5,7 +5,7 @@ using System.Text;
 namespace Screens
 {
 
-    public struct BufferChar
+    public struct BufferChar : IEquatable<BufferChar>
     {
         public char Ch;
         public ConsoleColor ForeColor;
@@ -24,6 +24,20 @@ namespace Screens
             return !(a == b);
         }
 
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            return (this == (BufferChar)obj);
+        }
+
+        public bool Equals(BufferChar other)
+        {
+            return (this == other);
+        }
     }
 
     public class Buffer : ICloneable

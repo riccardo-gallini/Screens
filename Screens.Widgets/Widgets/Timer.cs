@@ -6,8 +6,6 @@ using Microsoft.VisualBasic;
 namespace Screens
 {
 
-
-
     public class Timer : Control
     {
         private System.Threading.Timer _inner;
@@ -40,6 +38,8 @@ namespace Screens
             _inner.Change(System.Threading.Timeout.Infinite, System.Threading.Timeout.Infinite);
         }
 
+
+        //TODO: test timers
         public event TickEventHandler Tick;
 
         public delegate void TickEventHandler(Control sender, EventArgs e);

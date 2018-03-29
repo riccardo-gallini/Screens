@@ -4,7 +4,6 @@ using System.Linq;
 using Microsoft.VisualBasic;
 
 namespace Screens
-
 {
 
     public class ComboBoxForm : Form

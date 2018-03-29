@@ -7,8 +7,6 @@ using System.Drawing;
 namespace Screens
 {
 
-
-
     public class PaintEventArgs : EventArgs
     {
         public bool Handled { get; set; } = false;

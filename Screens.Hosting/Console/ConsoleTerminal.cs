@@ -7,8 +7,6 @@ namespace Screens.Hosting
 {
     internal class ConsoleTerminal : Terminal
     {
-        public bool BlackAndWhite { get; set; } = false;
-
         public override void Beep()
         {
             Console.Beep();

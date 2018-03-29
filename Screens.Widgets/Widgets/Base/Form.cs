@@ -8,8 +8,6 @@ using System.Drawing;
 namespace Screens
 {
 
-
-
     public abstract class Form : Control
     {
         internal bool _isActive;

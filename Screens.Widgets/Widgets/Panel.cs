@@ -5,9 +5,7 @@ using System.Linq;
 
 namespace Screens
 {
-
-
-
+    
     public class Panel
     {
         public virtual string Name { get; set; }

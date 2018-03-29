@@ -6,9 +6,7 @@ using System.Collections.ObjectModel;
 
 namespace Screens
 {
-
-
-
+    
     public class ControlsCollection : Collection<Control>
     {
 

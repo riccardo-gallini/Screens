@@ -6,9 +6,7 @@ using System.Drawing;
 
 namespace Screens
 {
-
-
-
+    
     public class ListBox : ListBase
     {
         public ListBox() : base()
