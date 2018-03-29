@@ -49,9 +49,9 @@ namespace Screens.Hosting
             if (!BlackAndWhite) SendToClient(ANSI_Encoder.Set_Attribute_Mode(ANSI_Encoder.From_BackColor(back)));
         }
 
-        public override void SetCursorPosition(int x, int y)
+        protected override void SetCursorPositionImpl()
         {
-            SendToClient(ANSI_Encoder.Cursor_Home(y, x));
+            SendToClient(ANSI_Encoder.Cursor_Home(CursorY, CursorX));
         }
 
         public override void SetForeGroundColor(ConsoleColor fore)

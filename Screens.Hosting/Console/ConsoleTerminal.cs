@@ -31,9 +31,9 @@ namespace Screens.Hosting
             if (!BlackAndWhite) Console.BackgroundColor = back;
         }
 
-        public override void SetCursorPosition(int x, int y)
+        protected override void SetCursorPositionImpl()
         {
-            Console.SetCursorPosition(x, y);
+            Console.SetCursorPosition(CursorX, CursorY);
         }
 
         public override void SetForeGroundColor(ConsoleColor fore)

@@ -177,9 +177,9 @@ namespace Screens
                 }
                 else
 
-                                // if visibile, normal character to be printed
+                // if visibile, normal character to be printed
 
-                                if (y >= 0 && y < _size.Height && x >= 0 && x < _size.Width && y < clip_bottom && x < clip_right)
+                if (y >= 0 && y < _size.Height && x >= 0 && x < _size.Width && y < clip_bottom && x < clip_right)
                 {
                     ch = new BufferChar() { Ch = s[i], ForeColor = foreColor, BackColor = backColor };
                     this[x, y] = ch;

@@ -14,8 +14,7 @@ namespace Screens
         public event AppMessageEventHandler AppMessage;
         public delegate void AppMessageEventHandler(Application sender, AppMessageEventArgs e);
 
-        private Terminal _terminal;
-        internal Terminal Terminal => _terminal;
+        public Terminal Terminal { get; set; }
         
         /// <summary>
         /// 
@@ -41,7 +40,8 @@ namespace Screens
 
         public Application(Terminal terminal)
         {
-            _terminal = terminal;
+            Terminal = terminal;
+            Terminal.KeyPressed = (key) => this.SendKey(key);
             _messageQueue = new MessageQueue(this);
         }
         
@@ -57,14 +57,14 @@ namespace Screens
             set
             {
                 _blackAndWhite = value;
-                _terminal.BlackAndWhite = value;
+                Terminal.BlackAndWhite = value;
             }
         }
 
         
         public void Run(Form f)
         {
-            _terminal.SetScreenSize(ScreenSize.Width, ScreenSize.Height);
+            Terminal.SetScreenSize(ScreenSize.Width, ScreenSize.Height);
 
             start:
             
@@ -74,7 +74,7 @@ namespace Screens
 
                 _show(f);
 
-                _terminal.Clear();
+                Terminal.Clear();
                 PerformPaint();
                                 
                 // Start the message loop
@@ -118,32 +118,14 @@ namespace Screens
                 var old_size = error_form.Size;
                 error_form.Size = ScreenSize;
                 error_form.PerformAnchoring(old_size, error_form.Size);
-                _terminal.Clear();
+                Terminal.Clear();
                 Show(error_form);
                 PerformPaint();
 
                 goto start;
             }
 
-            _terminal.Clear();
-        }
-
-        private int _cursorX;
-        public int CursorX
-        {
-            get
-            {
-                return _cursorX;
-            }
-        }
-
-        private int _cursorY;
-        public int CursorY
-        {
-            get
-            {
-                return _cursorY;
-            }
+            Terminal.Clear();
         }
 
         public void Close(Form f)
@@ -254,7 +236,7 @@ namespace Screens
             // form paint
             if (ActiveForm.IsInvalidated)
             {
-                _terminal.HideCursor();
+                Terminal.HideCursor();
 
                 Buffer current_buffer = Terminal.CurrentBuffer;
 
@@ -289,18 +271,16 @@ namespace Screens
             {
                 {
                     var c = ActiveForm.FocusedControl;
-                    _cursorX = c.Location.X + c.CursorPosition.X;
-                    _cursorY = c.Location.Y + c.CursorPosition.Y;
-                    _terminal.SetCursorPosition(_cursorX, _cursorY);
-                    _terminal.ShowCursor();
+                                       
+                    //move cursor to the focused control
+                    Terminal.SetCursorPosition(c.Location.X + c.CursorPosition.X, c.Location.Y + c.CursorPosition.Y);
+                    Terminal.ShowCursor();
                 }
             }
             else
             {
-                _cursorX = 0;
-                _cursorY = 0;
-                _terminal.SetCursorPosition(_cursorX, _cursorY);
-                _terminal.HideCursor();
+                Terminal.SetCursorPosition(0, 0);
+                Terminal.HideCursor();
             }
         }
 
@@ -327,7 +307,7 @@ namespace Screens
 
         public void Beep()
         {
-            _terminal.Beep();
+            Terminal.Beep();
         }
 
 

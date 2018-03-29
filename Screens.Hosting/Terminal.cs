@@ -13,10 +13,23 @@ namespace Screens.Hosting
         public bool BlackAndWhite { get; set; }
         public Size ScreenSize { get; set; }
 
+
+        public int CursorX { get; set; }
+        public int CursorY { get; set; }
+        
+
         public abstract void Clear();
         
         public abstract void SetScreenSize(int width, int height);
-        public abstract void SetCursorPosition(int x, int y);
+
+        public void SetCursorPosition(int x, int y)
+        {
+            CursorX = x;
+            CursorY = y;
+            SetCursorPositionImpl();
+        }
+
+        protected abstract void SetCursorPositionImpl();
         public abstract void SetBackGroundColor(ConsoleColor back);
         public abstract void SetForeGroundColor(ConsoleColor back);
         public abstract void HideCursor();
