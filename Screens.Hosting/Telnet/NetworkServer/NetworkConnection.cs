@@ -4,7 +4,7 @@ using System.Net.Sockets;
 
 namespace Screens.Hosting
 {
-    public class ClientConnection 
+    public class NetworkConnection 
     {
         public int Id { get; }
         public IPEndPoint RemoteEndPoint { get; }
@@ -21,7 +21,7 @@ namespace Screens.Hosting
             }
         }
 
-        internal ClientConnection(int clientId, IPEndPoint remoteAddress, Socket socket)
+        internal NetworkConnection(int clientId, IPEndPoint remoteAddress, Socket socket)
         {
             this.Id = clientId;
             this.RemoteEndPoint = remoteAddress;

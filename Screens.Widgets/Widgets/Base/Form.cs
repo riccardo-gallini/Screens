@@ -92,7 +92,7 @@ namespace Screens
                 this.Application.BlackAndWhite = !this.Application.BlackAndWhite;
                 this.Invalidate();
                 this.Controls.InvalidateAll();
-                this.Application.ResetBuffer();
+                this.Application.Terminal.ResetBuffer();
                 already_handled = true;
             }
 
@@ -101,7 +101,7 @@ namespace Screens
             {
                 this.Invalidate();
                 this.Controls.InvalidateAll();
-                this.Application.ResetBuffer();
+                this.Application.Terminal.ResetBuffer(); //TODO: is this needed?
                 already_handled = true;
             }
 

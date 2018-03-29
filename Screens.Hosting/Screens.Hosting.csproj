@@ -8,8 +8,4 @@
     <LangVersion>7.2</LangVersion>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Screens.Widgets\Screens.Widgets.csproj" />
-  </ItemGroup>
-
 </Project>

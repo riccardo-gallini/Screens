@@ -4,19 +4,18 @@ using System.Linq;
 using System.Collections.ObjectModel;
 using System.Drawing;
 using System.ComponentModel;
+using Screens.Hosting;
 
 namespace Screens
 {
-
-
-
+    
     public class Application
     {
         public event AppMessageEventHandler AppMessage;
         public delegate void AppMessageEventHandler(Application sender, AppMessageEventArgs e);
 
-        private ITerminal _terminal;
-        internal ITerminal Terminal => _terminal;
+        private Terminal _terminal;
+        internal Terminal Terminal => _terminal;
         
         /// <summary>
         /// 
@@ -26,15 +25,27 @@ namespace Screens
         public static Application Current => _currentApp;
 
         private MessageQueue _messageQueue;
-        private Buffer current_buffer;
 
-        public Application(ITerminal terminal)
+        public Size ScreenSize
+        {
+            get
+            {
+                return this.Terminal.ScreenSize;
+            }
+            set
+            {
+                this.Terminal.ScreenSize = value;
+            }
+        }
+
+
+        public Application(Terminal terminal)
         {
             _terminal = terminal;
             _messageQueue = new MessageQueue(this);
         }
         
-        public Size ScreenSize { get; set; }
+
 
         private bool _blackAndWhite = false;
         public bool BlackAndWhite
@@ -191,9 +202,6 @@ namespace Screens
 
                 _activeForm = f;
 
-                current_buffer = new Buffer(ScreenSize);
-                last_buffer = (Buffer)current_buffer.Clone();
-
                 f.OnActivated(EventArgs.Empty);
                 f.Invalidate();
                 if (f.FocusedControl == null)
@@ -202,7 +210,7 @@ namespace Screens
                         f.FocusedControl = f.Controls.TabIndexList.First.Value;
                 }
 
-                ResetBuffer();
+                Terminal.ResetBuffer();  //TODO: here or at [[[XXX]]]?
             }
         }
 
@@ -248,6 +256,8 @@ namespace Screens
             {
                 _terminal.HideCursor();
 
+                Buffer current_buffer = Terminal.CurrentBuffer;
+
                 var form_event = new PaintEventArgs(current_buffer.ClipRectangle, current_buffer);
                 ActiveForm.OnPaint(form_event);
                 ActiveForm.IsInvalidated = false;
@@ -272,7 +282,7 @@ namespace Screens
                     node = node.Next;
                 }
 
-                flushBufferToTerminal(current_buffer); // TODO: should be from another class
+                Terminal.FlushBuffer();
             }
 
             if (ActiveForm.FocusedControl != null)
@@ -321,81 +331,8 @@ namespace Screens
         }
 
 
-        // ////////////'' send buffer stuff ==> needs a new place
-        /// 
-        private Buffer last_buffer;
 
-        private void flushBufferToTerminal(Buffer buffer)
-        {
-
-            // send changed lines in buffer to the context (console or terminal)
-            // in an optimized way
-
-            var xs = 0;
-            var ys = 0;
-
-
-            // scrittura ottimizzata del buffer al terminale
-            // a) manda una riga solo se è cambiata
-            // b) manda la riga a 'pezzi' scrivendo stringhe intere a pari colore
-
-            while (ys < buffer.Height)
-            {
-                if (IsLineChanged(buffer, last_buffer, ys))
-                {
-                    xs = 0;
-                    var str = new System.Text.StringBuilder();
-                    var cur_fore = buffer[xs, ys].ForeColor;
-                    var cur_back = buffer[xs, ys].BackColor;
-                    var cur_x = 0;
-
-                    while (xs < buffer.Width)
-                    {
-                        var buf_char = buffer[xs, ys];
-                        if (buf_char.ForeColor != cur_fore || buf_char.BackColor != cur_back)
-                        {
-                            _terminal.Write(str.ToString(), cur_fore, cur_back, cur_x, ys);
-                            str = new System.Text.StringBuilder();
-                            cur_fore = buf_char.ForeColor;
-                            cur_back = buf_char.BackColor;
-                            cur_x = xs;
-                        }
-                        str.Append(buf_char.Ch);
-
-                        xs += 1;
-                    }
-                    _terminal.Write(str.ToString(), cur_fore, cur_back, cur_x, ys);
-                }
-                ys += 1;
-            }
-
-            last_buffer = (Buffer)buffer.Clone();
-        }
-
-        private static bool IsLineChanged(Buffer a, Buffer b, int y)
-        {
-            if (b == null || a == null)
-                return true;
-
-            var x = 0;
-            while (x < a.Width)
-            {
-                if (a[x, y] != b[x, y])
-                    return true;
-                x += 1;
-            }
-            return false;
-        }
-
-        public void ResetBuffer()
-        {
-            if (current_buffer != null)
-            {
-                last_buffer.Clear();
-                current_buffer.Clear();
-                _terminal.Clear();
-            }
-        }
+       
 
         protected virtual void OnAppMessage(AppMessageEventArgs e)
         {

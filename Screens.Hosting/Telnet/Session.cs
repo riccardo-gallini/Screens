@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Text;
 
 namespace Screens.Hosting
@@ -7,11 +8,10 @@ namespace Screens.Hosting
     public class Session
     {
         public TelnetHost Host { get; }
-        public ClientConnection Connection { get; }
-        public Application Application { get; internal set; }
+        public NetworkConnection Connection { get; }
         public TelnetTerminal Terminal { get; internal set; }
-        
-        internal Session(TelnetHost h, ClientConnection c)
+
+        internal Session(TelnetHost h, NetworkConnection c)
         {
             Host = h;
             Connection = c;
@@ -26,11 +26,6 @@ namespace Screens.Hosting
         {
             Terminal.ProcessData(data);
         }
-        
-        internal void Close()
-        {
-            Application?.Exit();
-        }
 
         public int Id
         {
@@ -40,15 +35,15 @@ namespace Screens.Hosting
             }
         }
 
-        public void SendCustomMessage(object data)
-        {
-            Application?.SendAppMessage(data);
-        }
+        //TODO: removed CustomAppMessage
 
         public void Kick()
         {
             Host.Server.KickClient(Connection);
         }
+
+
+
 
     }
 }

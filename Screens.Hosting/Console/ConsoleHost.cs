@@ -8,34 +8,28 @@ namespace Screens.Hosting
     public class ConsoleHost
     {
 
-        Action<Application> _runner;
-
-        public void Run(Action<Application> runner)
-        {
-            _runner = runner;
-        }
-                
+        public Action<Terminal> Main;
 
         public void StartHost()
         {
+            if (Main == null) throw new InvalidOperationException(" 'Main' was null!");
+
             var terminal = new ConsoleTerminal();
-            var app = new Application(terminal);
-         
+                     
             Task.Factory.StartNew(
                 () =>
                 {
                     while (true)
                     {
                         var win32_console_key = Console.ReadKey();
-                        app.SendKey(keyInfo(win32_console_key));
+                        terminal.SendKey(keyInfo(win32_console_key));
                     }
 
                 }
                 
             );
-
-            //Task.Factory.StartNew(()=>on_connect(app));
-            _runner(app);
+                        
+            Main(terminal);
         }
 
         private KeyInfo keyInfo(ConsoleKeyInfo win32_key)

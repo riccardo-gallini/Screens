@@ -164,6 +164,9 @@ Public Class MenuProdottiFiniti
     Private Sub btRettifica_Click(sender As Screens.Button, e As System.EventArgs) Handles btRettifica.Click
         'Dim K As New Rettifica
         'Application.Show(K)
+
+        Dim app = Application.Current
+
     End Sub
 
     Private Sub btConsultazioneGiacenze_Click(sender As Screens.Button, e As System.EventArgs) Handles btConsultazioneGiacenze.Click

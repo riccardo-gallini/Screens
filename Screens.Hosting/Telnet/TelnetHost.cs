@@ -14,9 +14,17 @@ namespace Screens.Hosting
     {
         public NetworkServer Server { get; }
 
-        private Dictionary<int, Session> _sessions = new Dictionary<int, Session>();
-        private Action<Application> _runner;
+        public Action<Terminal> Main;
+        public Action<Terminal> End;
+        
+        public delegate void SessionConnectedEventHandler(TelnetHost h, SessionEventArgs e);
+        public event SessionConnectedEventHandler SessionConnected = null;
 
+        public delegate void SessionDisconnectedEventHandler(TelnetHost h, SessionEventArgs e);
+        public event SessionDisconnectedEventHandler SessionDisconnected = null;
+
+        private Dictionary<int, Session> _sessions = new Dictionary<int, Session>();
+        
         public IReadOnlyCollection<Session> Sessions
         {
             get
@@ -35,79 +43,64 @@ namespace Screens.Hosting
 
         public TelnetHost() : this(IPAddress.Any) {}
 
-        public delegate void SessionConnectedEventHandler(TelnetHost h, SessionConnectedEventArgs e);
-        public event SessionConnectedEventHandler SessionConnected = null;
-
-
-        public void Run(Action<Application> runner)
-        {
-            _runner = runner;
-        }
-
         public void Stop()
         {
             Server.Stop();
         }
 
 
-        private void _clientConnected(ClientConnection c)
+        private void _clientConnected(NetworkConnection c)
         {
             var sess = new Session(this, c);
             _sessions.Add(c.Id, sess);
 
-            var e = new SessionConnectedEventArgs(sess);
+            var e = new SessionEventArgs(sess);
             SessionConnected(this, e);
 
-            if (!e.Refuse)
+            if (!e.RefuseConnection)
             {
                 
                 var term = new TelnetTerminal();
-                var app = new Application(term);
                 sess.Terminal = term;
                 term.Session = sess;
-                term.Application = app;
-                sess.Application = app;
-
-                Task.Factory.StartNew(() => _runner(app)); 
+                
+                Task.Factory.StartNew(() => Main(term)); 
 
             }
             else
             {
                 sess.Kick();
-
             }
             
         }
 
-        internal void SendToClient(ClientConnection conn, string message)
+        internal void SendToClient(NetworkConnection conn, string message)
         {
             byte[] data = Encoding.ASCII.GetBytes(message);
             this.Server.Send(conn, data);
         }
 
-        private void _messageReceived(ClientConnection c, byte[] data)
+        private void _messageReceived(NetworkConnection c, byte[] data)
         {
             _sessions[c.Id].DataFromClient(data);          
         }
 
-        private void _clientDisconnected(ClientConnection c)
+        private void _clientDisconnected(NetworkConnection c)
         {
-            _sessions[c.Id].Close();
+            var sess = _sessions[c.Id];
+            End?.Invoke(sess.Terminal);
+
+            var e = new SessionEventArgs(sess);
+            SessionDisconnected(this, e);
+
             _sessions.Remove(c.Id);
         }
 
         public void StartHost()
         {
+            if (Main == null) throw new InvalidOperationException(" 'Main' was null!");
+
             Server.Start();
-        }
-
-
-        public void SendCustomMessage_All(object data)
-        {
-            foreach (var sess in _sessions.Values)
-            {
-                sess.SendCustomMessage(data);
-            }
         }
 
         public void Kick_All()

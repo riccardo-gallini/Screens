@@ -1,61 +1,63 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Text;
 
 namespace Screens.Hosting
 {
-    internal class ConsoleTerminal : ITerminal
+    internal class ConsoleTerminal : Terminal
     {
         public bool BlackAndWhite { get; set; } = false;
 
-        public void Beep()
+        public override void Beep()
         {
             Console.Beep();
         }
 
-        public void Clear()
+        public override void Clear()
         {
             Console.ForegroundColor = ConsoleColor.White;
             Console.BackgroundColor = ConsoleColor.Black;
             Console.Clear();
         }
 
-        public void HideCursor()
+        public override void HideCursor()
         {
             Console.CursorVisible = false;
         }
         
-        public void SetBackGroundColor(ConsoleColor back)
+        public override void SetBackGroundColor(ConsoleColor back)
         {
             if (!BlackAndWhite) Console.BackgroundColor = back;
         }
 
-        public void SetCursorPosition(int x, int y)
+        public override void SetCursorPosition(int x, int y)
         {
             Console.SetCursorPosition(x, y);
         }
 
-        public void SetForeGroundColor(ConsoleColor fore)
+        public override void SetForeGroundColor(ConsoleColor fore)
         {
             if (!BlackAndWhite) Console.ForegroundColor = fore;
         }
 
-        public void SetScreenSize(int width, int height)
+        public override void SetScreenSize(int width, int height)
         {
+            ScreenSize = new Size(width, height);
             Console.SetWindowSize(width, height);
         }
 
-        public void ShowCursor()
+        public override void ShowCursor()
         {
             Console.CursorVisible = true;
         }
                
-        public void Write(string s)
+        public override void Write(string s)
         {
             Console.Write(s);
         }
 
-        public void Write(string s, ConsoleColor fore, ConsoleColor back, int x, int y)
+        public override void Write(string s, ConsoleColor fore, ConsoleColor back, int x, int y)
         {
             SetCursorPosition(x, y);
             SetForeGroundColor(fore);

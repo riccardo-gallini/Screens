@@ -16,11 +16,11 @@ namespace Screens.Hosting
         private readonly int dataSize;
         private byte[] data;
         
-        private Dictionary<int, ClientConnection> connections;
+        private Dictionary<int, NetworkConnection> connections;
 
-        public Action<ClientConnection> OnClientConnected;
-        public Action<ClientConnection> OnClientDisconnected;
-        public Action<ClientConnection, byte[]> OnMessageReceived;
+        public Action<NetworkConnection> OnClientConnected;
+        public Action<NetworkConnection> OnClientDisconnected;
+        public Action<NetworkConnection, byte[]> OnMessageReceived;
 
         internal NetworkServer(IPAddress IP, int port, int buffer = 1024)
         {
@@ -30,7 +30,7 @@ namespace Screens.Hosting
             this.dataSize = buffer;
             this.data = new byte[buffer];
 
-            this.connections = new Dictionary<int, ClientConnection>();
+            this.connections = new Dictionary<int, NetworkConnection>();
 
             this.serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         }
@@ -47,18 +47,18 @@ namespace Screens.Hosting
             serverSocket.Close();
         }
         
-        public void Send(ClientConnection conn, byte[] message)
+        public void Send(NetworkConnection conn, byte[] message)
         {
             conn.Socket.BeginSend(message, 0, message.Length, SocketFlags.None, new AsyncCallback(sendData), conn);
         }
                 
-        public void KickClient(ClientConnection connection)
+        public void KickClient(NetworkConnection connection)
         {
             closeSocket(connection);
             OnClientDisconnected(connection);
         }
 
-        private void closeSocket(ClientConnection connection)
+        private void closeSocket(NetworkConnection connection)
         {
             connection.Socket.Close();
             connections.Remove(connection.Id);
@@ -73,7 +73,7 @@ namespace Screens.Hosting
                 Socket clientSocket = _serverSocket.EndAccept(result);
 
                 int clientID = connections.Count + 1;
-                ClientConnection conn = new ClientConnection(clientID, (IPEndPoint)clientSocket.RemoteEndPoint, clientSocket);
+                NetworkConnection conn = new NetworkConnection(clientID, (IPEndPoint)clientSocket.RemoteEndPoint, clientSocket);
                 connections.Add(clientID, conn);
 
                 // Do Echo
@@ -101,7 +101,7 @@ namespace Screens.Hosting
         {
             try
             {
-                ClientConnection conn = (ClientConnection)result.AsyncState;
+                NetworkConnection conn = (NetworkConnection)result.AsyncState;
 
                 conn.Socket.EndSend(result);
 
@@ -115,7 +115,7 @@ namespace Screens.Hosting
         {
             try
             {
-                ClientConnection connection = (ClientConnection)result.AsyncState;
+                NetworkConnection connection = (NetworkConnection)result.AsyncState;
                                 
                 int bytesReceived = connection.Socket.EndReceive(result);
 
