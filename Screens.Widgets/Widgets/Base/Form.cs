@@ -99,7 +99,7 @@ namespace Screens
             {
                 this.Invalidate();
                 this.Controls.InvalidateAll();
-                this.Application.Terminal.ResetBuffer(); //TODO: is this needed?
+                this.Application.Terminal.ResetBuffer();
                 already_handled = true;
             }
 

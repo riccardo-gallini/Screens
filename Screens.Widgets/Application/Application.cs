@@ -175,7 +175,7 @@ namespace Screens
 
                 _activeForm = f;
 
-                Terminal.ResetBuffer();  //TODO: check here'!?!
+                Terminal.ResetBuffer();
 
                 f.OnActivated(EventArgs.Empty);
                 f.Invalidate();
