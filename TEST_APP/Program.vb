@@ -7,10 +7,6 @@ Imports Screens.Hosting
 Module Program
     Sub Main(args As String())
 
-        Dim decoder = New ANSI_Decoder()
-        decoder.KeyReady = Sub(key) Console.WriteLine(key.SpecialKey)
-
-
         Dim host = New TelnetHost()
         AddHandler host.SessionConnected, AddressOf connect
         AddHandler host.SessionDisconnected, AddressOf disconnect
