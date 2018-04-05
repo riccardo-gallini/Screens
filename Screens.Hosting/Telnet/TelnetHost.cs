@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 namespace Screens.Hosting
 {
 
-    public class TelnetHost
+    public class TelnetHost : IHost
     {
         public NetworkServer Server { get; }
 
-        public Action<Terminal> Main;
+        public Action<Terminal> Main { get; set; }
                 
         public delegate void SessionConnectedEventHandler(TelnetHost h, SessionEventArgs e);
         public event SessionConnectedEventHandler SessionConnected = null;
@@ -42,7 +42,7 @@ namespace Screens.Hosting
 
         public TelnetHost() : this(IPAddress.Any) {}
 
-        public void Stop()
+        public void StopHost()
         {
             Server.Stop();
         }

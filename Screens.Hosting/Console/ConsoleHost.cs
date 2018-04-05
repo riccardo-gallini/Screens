@@ -3,14 +3,7 @@ using System.Threading.Tasks;
 
 namespace Screens.Hosting
 {
-    public interface IHost
-    {
-        Action<Terminal> Main { get; set; }
-        void StartHost();
-        void StopHost();
-    }
-
-    public class ConsoleHost :IHost
+    public class ConsoleHost : IHost
     {
 
         public Action<Terminal> Main { get; set; }
