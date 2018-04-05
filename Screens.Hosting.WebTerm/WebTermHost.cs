@@ -23,7 +23,7 @@ namespace Screens.Hosting.WebTerm
             throw new NotImplementedException();
         }
         
-        public static IWebHost BuildWebHost() =>
+        public IWebHost BuildWebHost() =>
             WebHost.CreateDefaultBuilder()
                    .UseStartup<Startup>()
                    .Build();

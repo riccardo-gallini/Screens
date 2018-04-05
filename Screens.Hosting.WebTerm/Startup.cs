@@ -33,7 +33,7 @@ namespace Screens.Hosting.WebTerm
                 app.UseExceptionHandler("/err.html");
             }
             
-            //static serving from wwwroot ---------------------------------------------------------
+            // static serving from wwwroot ---------------------------------------------------------
 
             var assembly = typeof(Startup).GetTypeInfo().Assembly;
             var wwwroot = assembly.GetName().Name + ".wwwroot";
@@ -42,11 +42,8 @@ namespace Screens.Hosting.WebTerm
             app.UseDefaultFiles(new DefaultFilesOptions { FileProvider = wwwroot_provider });
             app.UseStaticFiles(new StaticFileOptions { FileProvider = wwwroot_provider });
 
-            //signalR comm ------------------------------------------------------------------------
-            app.UseSignalR(routes =>
-            {
-                routes.MapHub<WebTermHub>("/hubs/term");
-            });
+            // signalR comm ------------------------------------------------------------------------
+            app.UseSignalR(routes => { routes.MapHub<WebTermHub>("/hubs/term"); });
         }
     }
 }
