@@ -3,13 +3,12 @@ Imports System.Drawing
 Imports System.Net
 Imports Screens
 Imports Screens.Hosting
+Imports Screens.Hosting.WebTerm
 
 Module Program
     Sub Main(args As String())
 
-        Dim host = New TelnetHost()
-        AddHandler host.SessionConnected, AddressOf connect
-        AddHandler host.SessionDisconnected, AddressOf disconnect
+        Dim host = New WebTermHost
 
         host.Main = Sub(term)
                         Dim application = New Application(term)
@@ -18,15 +17,28 @@ Module Program
                         application.Run(New MenuProdottiFiniti())
                     End Sub
 
-
         host.StartHost()
 
-        Console.WriteLine("SERVER RUNNING!!")
+        'Dim host = New TelnetHost()
+        'AddHandler host.SessionConnected, AddressOf connect
+        'AddHandler host.SessionDisconnected, AddressOf disconnect
 
-        Do
-            Threading.Thread.Sleep(20000)
+        'host.Main = Sub(term)
+        '                Dim application = New Application(term)
+        '                application.ScreenSize = New Size(29, 20)
+        '                application.BlackAndWhite = False
+        '                application.Run(New MenuProdottiFiniti())
+        '            End Sub
 
-        Loop
+
+        'host.StartHost()
+
+        'Console.WriteLine("SERVER RUNNING!!")
+
+        'Do
+        '    Threading.Thread.Sleep(20000)
+
+        'Loop
 
     End Sub
 

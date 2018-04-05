@@ -6,6 +6,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="launchSettings.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="launchSettings.json">
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Screens.Hosting.WebTerm\Screens.Hosting.WebTerm.csproj" />
     <ProjectReference Include="..\Screens.Hosting\Screens.Hosting.csproj" />
     <ProjectReference Include="..\Screens.Widgets\Screens.Widgets.csproj" />
   </ItemGroup>
