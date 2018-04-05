@@ -18,7 +18,7 @@ namespace Screens.Hosting.WebTerm
 
         internal void SendToClient(string msg)
         {
-            Host.SendToClient(Connection, msg);
+            Host.SendToClient(ConnectionID, msg);
         }
 
         internal void DataFromClient(byte[] data)

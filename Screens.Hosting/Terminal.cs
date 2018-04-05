@@ -36,8 +36,9 @@ namespace Screens.Hosting
         public abstract void HideCursor();
         public abstract void ShowCursor();
 
-        public abstract void Write(string s);
-        public abstract void Write(string s, ConsoleColor fore, ConsoleColor back, int x, int y);
+        //public abstract void Write(string s);
+        //public abstract void Write(string s, ConsoleColor fore, ConsoleColor back, int x, int y);
+        public abstract void SubmitChanges(TerminalChanges changes);
         public abstract void Beep();
 
         public BufferManager BufferManager { get; }

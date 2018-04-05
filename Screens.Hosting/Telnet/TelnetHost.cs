@@ -54,7 +54,7 @@ namespace Screens.Hosting
             _sessions.Add(c.Id, sess);
 
             var e = new SessionEventArgs(sess);
-            SessionConnected(this, e);
+            SessionConnected?.Invoke(this, e);
 
             if (!e.RefuseConnection)
             {

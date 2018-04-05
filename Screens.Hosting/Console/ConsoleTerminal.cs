@@ -49,18 +49,26 @@ namespace Screens.Hosting
         {
             Console.CursorVisible = true;
         }
-               
-        public override void Write(string s)
+
+        public override void SubmitChanges(TerminalChanges changes)
+        {
+            foreach (var line in changes.Lines)
+                foreach (var span in line.Spans)
+                    Write(span.Text, span.ForeColor, span.BackColor, span.X, line.Y);
+        }
+        
+        public void Write(string s)
         {
             Console.Write(s);
         }
 
-        public override void Write(string s, ConsoleColor fore, ConsoleColor back, int x, int y)
+        public void Write(string s, ConsoleColor fore, ConsoleColor back, int x, int y)
         {
             SetCursorPosition(x, y);
             SetForeGroundColor(fore);
             SetBackGroundColor(back);
             Write(s);
         }
+               
     }
 }
