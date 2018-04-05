@@ -2,18 +2,18 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Screens.Hosting
+namespace Screens.Hosting.WebTerm
 {
     public class Session
     {
-        public TelnetHost Host { get; }
-        public NetworkConnection Connection { get; }
-        public TelnetTerminal Terminal { get; internal set; }
+        public WebTermHost Host { get; }
+        public string ConnectionID { get; }
+        public WebTerminal Terminal { get; internal set; }
 
-        internal Session(TelnetHost h, NetworkConnection c)
+        internal Session(WebTermHost h, string c)
         {
             Host = h;
-            Connection = c;
+            ConnectionID = c;
         }
 
         internal void SendToClient(string msg)

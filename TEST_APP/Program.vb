@@ -8,7 +8,7 @@ Imports Screens.Hosting.WebTerm
 Module Program
     Sub Main(args As String())
 
-        Dim host = New WebTermHost
+        Dim host = WebTermHost.Instance
 
         host.Main = Sub(term)
                         Dim application = New Application(term)

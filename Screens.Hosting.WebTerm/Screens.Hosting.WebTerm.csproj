@@ -9,11 +9,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="wwwroot\index.html" />
+    <Content Remove="wwwroot\**\*.*" />
   </ItemGroup>
-
+  
   <ItemGroup>
-    <EmbeddedResource Include="wwwroot\index.html" />
+    <EmbeddedResource Include="wwwroot\**\*.*" />
   </ItemGroup>
 
   <ItemGroup>
