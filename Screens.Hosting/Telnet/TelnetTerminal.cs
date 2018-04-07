@@ -4,27 +4,28 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Text;
 
-namespace Screens.Hosting
+namespace Screens.Hosting.Telnet
 {
     public class TelnetTerminal : Terminal
     {
         public ANSI_Decoder ANSI_Decoder { get; }
-        public Session Session { get; }
+        public TelnetSession Session { get; }
         
-        internal TelnetTerminal(Session session)
+        internal TelnetTerminal(TelnetSession session)
         {
             Session = session;
 
             ANSI_Decoder = new ANSI_Decoder();
-            ANSI_Decoder.KeyReady = (key) => this.SendKey(key);
+            ANSI_Decoder.KeyReady = (key) => this.ProcessKey(key);
         }
 
-        private void SendToClient(string msg)
+        private void SendToClient(string message)
         {
-            Session.SendToClient(msg);
+            byte[] data = Encoding.ASCII.GetBytes(message);
+            Session.Send(data);
         }
 
-        internal void ProcessData(byte[] data)
+        internal void ProcessRawData(byte[] data)
         {
             ANSI_Decoder.Decode(data);
         }

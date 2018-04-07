@@ -7,11 +7,11 @@ namespace Screens.Hosting
     public class SessionEventArgs : EventArgs
     {
         public bool RefuseConnection { get; set; } = false;
-        public Session Session { get; }
+        public ISession Session { get; }
 
-        internal SessionEventArgs(Session sess)
+        internal SessionEventArgs(ISession session)
         {
-            Session = sess;
+            Session = session;
         }
     }
 }

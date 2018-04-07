@@ -1,24 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Sockets;
 using System.Text;
 
-namespace Screens.Hosting
+namespace Screens.Hosting.WebTerm
 {
-    public class Session
+    public class WebTermSession : ISession
     {
-        public TelnetHost Host { get; }
-        public NetworkConnection Connection { get; }
-        public TelnetTerminal Terminal { get; internal set; }
+        public WebTermHost Host { get; }
+        public string ConnectionId { get; }
+        public WebTerminal Terminal { get; internal set; }
 
-        internal Session(TelnetHost h, NetworkConnection c)
+
+
+
+        internal WebTermSession(WebTermHost h, string c)
         {
             Host = h;
-            Connection = c;
+            ConnectionId = c;
         }
 
         internal void SendToClient(string msg)
         {
-            Host.SendToClient(Connection, msg);
+            Host.SendToClient(ConnectionId, msg);
         }
 
         internal void DataFromClient(byte[] data)

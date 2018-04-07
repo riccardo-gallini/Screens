@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Text;
 
-namespace Screens.Hosting
+namespace Screens.Hosting.LocalConsole
 {
-    internal class ConsoleTerminal : Terminal
+    public class ConsoleTerminal : Terminal
     {
         public override void Beep()
         {

@@ -16,13 +16,13 @@ namespace Screens.Hosting.WebTerm
         public delegate void SessionDisconnectedEventHandler(WebTermHost h, SessionEventArgs e);
         public event SessionDisconnectedEventHandler SessionDisconnected = null;
 
-        private Dictionary<string, Session> _sessions = new Dictionary<string, Session>();
+        private Dictionary<string, TelnetSession> _sessions = new Dictionary<string, TelnetSession>();
 
-        public IReadOnlyCollection<Session> Sessions
+        public IReadOnlyCollection<TelnetSession> Sessions
         {
             get
             {
-                return new ReadOnlyCollection<Session>(_sessions.Values.ToList());
+                return new ReadOnlyCollection<TelnetSession>(_sessions.Values.ToList());
             }
         }
 
@@ -53,7 +53,7 @@ namespace Screens.Hosting.WebTerm
 
         internal void _clientConnected(string connectionID)
         {
-            var sess = new Session(this, connectionID);
+            var sess = new TelnetSession(this, connectionID);
             _sessions.Add(connectionID, sess);
 
             var e = new SessionEventArgs(sess);
