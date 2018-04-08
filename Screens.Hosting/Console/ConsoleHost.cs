@@ -13,6 +13,9 @@ namespace Screens.Hosting.LocalConsole
         public int ListeningOnPort => 0;
         public Action<Terminal> Main { get; set; }
 
+        public event SessionConnectionEventHandler SessionConnected;
+        public event SessionConnectionEventHandler SessionDisconnected;
+
         public IReadOnlyCollection<ISession> Sessions
         {
             get
@@ -25,7 +28,7 @@ namespace Screens.Hosting.LocalConsole
         private Task console_listener;
         private ConsoleSession fakeSession;
         private List<ConsoleSession> _sessions = new List<ConsoleSession>();
-        
+
         public void StartHost()
         {
             if (Main == null) throw new InvalidOperationException(" 'Main' was null!");
@@ -37,21 +40,33 @@ namespace Screens.Hosting.LocalConsole
 
             cont = true;
 
-            console_listener = 
-                Task.Run(
-                    () =>
-                    {
-                        while (cont)
+            var e = new SessionEventArgs(fakeSession);
+            SessionDisconnected(this, e);
+
+            if (e.RefuseConnection==false)
+            {
+                console_listener =
+                    Task.Run(
+                        () =>
                         {
-                            var win32_console_key = Console.ReadKey();
-                            terminal.ProcessKey(keyInfo(win32_console_key));
+                            while (cont)
+                            {
+                                var win32_console_key = Console.ReadKey();
+                                terminal.ProcessKey(keyInfo(win32_console_key));
+                            }
                         }
-                    }
-                
-            );
-                        
-            Main(terminal);
-            terminal.SendCloseRequest();
+
+                );
+
+                Main(terminal);
+                terminal.SendCloseRequest();
+            }
+            else
+            {
+                fakeSession.Kick();
+            }
+            SessionDisconnected(this, new SessionEventArgs(fakeSession));
+
         }
 
         public void StopHost()

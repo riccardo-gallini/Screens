@@ -18,12 +18,9 @@ namespace Screens.Hosting.Telnet
         public int ListeningOnPort { get; }
 
         public Action<Terminal> Main { get; set; }
-                
-        public delegate void SessionConnectedEventHandler(IHost h, SessionEventArgs e);
-        public event SessionConnectedEventHandler SessionConnected = null;
-
-        public delegate void SessionDisconnectedEventHandler(IHost h, SessionEventArgs e);
-        public event SessionDisconnectedEventHandler SessionDisconnected = null;
+        
+        public event SessionConnectionEventHandler SessionConnected = null;
+        public event SessionConnectionEventHandler SessionDisconnected = null;
 
         private Dictionary<string, TelnetSession> _sessions = new Dictionary<string, TelnetSession>();
         

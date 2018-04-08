@@ -6,7 +6,7 @@ Imports Screens.Hosting
 Imports Screens.Hosting.Telnet
 
 Module Program
-    Async Sub Main(args As String())
+    Sub Main(args As String())
 
         'Dim host = WebTermHost.Instance
 

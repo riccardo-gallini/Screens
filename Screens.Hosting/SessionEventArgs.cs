@@ -4,6 +4,8 @@ using System.Text;
 
 namespace Screens.Hosting
 {
+    public delegate void SessionConnectionEventHandler(IHost h, SessionEventArgs e);
+
     public class SessionEventArgs : EventArgs
     {
         public bool RefuseConnection { get; set; } = false;

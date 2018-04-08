@@ -36,7 +36,7 @@ namespace Screens.Hosting
         public abstract void HideCursor();
         public abstract void ShowCursor();
                 
-        protected abstract void SubmitChanges(TerminalChanges changes);
+        public abstract void SubmitChanges(TerminalChanges changes);
         public abstract void Beep();
 
         public BufferManager BufferManager { get; }

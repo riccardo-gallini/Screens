@@ -8,21 +8,22 @@ using System.Threading.Tasks;
 
 namespace Screens.Hosting.WebTerm
 {
+
+
+
     public class WebTermHost : IHost
     {
-        public delegate void SessionConnectedEventHandler(WebTermHost h, SessionEventArgs e);
-        public event SessionConnectedEventHandler SessionConnected = null;
+        
+        public event SessionConnectionEventHandler SessionConnected = null;
+        public event SessionConnectionEventHandler SessionDisconnected = null;
 
-        public delegate void SessionDisconnectedEventHandler(WebTermHost h, SessionEventArgs e);
-        public event SessionDisconnectedEventHandler SessionDisconnected = null;
+        private Dictionary<string, WebTermSession> _sessions = new Dictionary<string, WebTermSession>();
 
-        private Dictionary<string, TelnetSession> _sessions = new Dictionary<string, TelnetSession>();
-
-        public IReadOnlyCollection<TelnetSession> Sessions
+        public IReadOnlyCollection<WebTermSession> Sessions
         {
             get
             {
-                return new ReadOnlyCollection<TelnetSession>(_sessions.Values.ToList());
+                return new ReadOnlyCollection<WebTermSession>(_sessions.Values.ToList());
             }
         }
 
@@ -53,7 +54,7 @@ namespace Screens.Hosting.WebTerm
 
         internal void _clientConnected(string connectionID)
         {
-            var sess = new TelnetSession(this, connectionID);
+            var sess = new WebTermSession(this, connectionID);
             _sessions.Add(connectionID, sess);
 
             var e = new SessionEventArgs(sess);
