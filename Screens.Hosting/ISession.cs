@@ -9,7 +9,7 @@ namespace Screens.Hosting
     {
         string ConnectionId { get; }
         IPAddress RemoteAddress { get; }
-        int RemotePort { get; }
+        int? RemotePort { get; }
         DateTime ConnectionTime { get; }
 
         IHost Host { get; }

@@ -24,7 +24,7 @@ namespace Screens.Hosting.LocalConsole
             Console.CursorVisible = false;
         }
         
-        public override void SetBackGroundColor(ConsoleColor back)
+        public void SetBackGroundColor(ConsoleColor back)
         {
             if (!BlackAndWhite) Console.BackgroundColor = back;
         }
@@ -34,7 +34,7 @@ namespace Screens.Hosting.LocalConsole
             Console.SetCursorPosition(CursorX, CursorY);
         }
 
-        public override void SetForeGroundColor(ConsoleColor fore)
+        public void SetForeGroundColor(ConsoleColor fore)
         {
             if (!BlackAndWhite) Console.ForegroundColor = fore;
         }

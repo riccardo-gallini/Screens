@@ -15,7 +15,7 @@ namespace Screens.Hosting.Telnet
         public IHost Host => telnetHost;
         public Terminal Terminal => telnetTerminal;
         public IPEndPoint RemoteEndPoint => (IPEndPoint)Socket.RemoteEndPoint;
-        public int RemotePort => RemoteEndPoint.Port;
+        public int? RemotePort => RemoteEndPoint.Port;
         public IPAddress RemoteAddress => RemoteEndPoint.Address;
         
         private TelnetHost telnetHost;
@@ -48,7 +48,7 @@ namespace Screens.Hosting.Telnet
             telnetHost.ClientDisconnected(this);
         }
 
-        public void Connect()
+        public void Run()
         {
             var term = new TelnetTerminal(this);
             this.telnetTerminal = term;

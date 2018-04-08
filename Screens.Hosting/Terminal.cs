@@ -31,8 +31,7 @@ namespace Screens.Hosting
         }
 
         protected abstract void SetCursorPositionImpl();
-        public abstract void SetBackGroundColor(ConsoleColor back);
-        public abstract void SetForeGroundColor(ConsoleColor back);
+
         public abstract void HideCursor();
         public abstract void ShowCursor();
                 

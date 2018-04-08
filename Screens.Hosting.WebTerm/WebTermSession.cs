@@ -1,48 +1,63 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.SignalR;
+using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Screens.Hosting.WebTerm
 {
     public class WebTermSession : ISession
     {
-        public WebTermHost Host { get; }
-        public string ConnectionId { get; }
-        public WebTerminal Terminal { get; internal set; }
-
-
-
-
-        internal WebTermSession(WebTermHost h, string c)
-        {
-            Host = h;
-            ConnectionId = c;
-        }
-
-        internal void SendToClient(string msg)
-        {
-            Host.SendToClient(ConnectionId, msg);
-        }
-
-        internal void DataFromClient(byte[] data)
-        {
-            Terminal.ProcessData(data);
-        }
-
-        public int Id
+        public IHost Host
         {
             get
             {
-                return Connection.Id;
+                return webTermHost;
+            }
+        }
+        public string ConnectionId
+        {
+            get
+            {
+                return Connection.ConnectionId;
             }
         }
 
-        //TODO: removed CustomAppMessage
+        public Terminal Terminal { get; internal set; }
+
+        public IPAddress RemoteAddress => Connection.RemoteIpAddress;
+        public int? RemotePort => Connection.RemotePort;
+        public DateTime ConnectionTime { get; }
+        
+        public IClientProxy Client { get; }
+        public HubConnectionContext Connection { get; }
+        
+
+        private WebTermHost webTermHost;
+        private WebTerminal webTerminal;
+
+
+        internal WebTermSession(WebTermHost h, HubConnectionContext c, IClientProxy client)
+        {
+            ConnectionTime = DateTime.Now;
+            webTermHost = h;
+            Connection = c;
+            Client = client;
+        }
+
+        async internal Task RunAsync()
+        {
+            var term = new WebTerminal(this);
+            this.webTerminal = term;
+
+            await Task.Run(() => Host.Main(term));
+        }
 
         public void Kick()
         {
-            Host.Server.KickClient(Connection);
+
         }
 
     }

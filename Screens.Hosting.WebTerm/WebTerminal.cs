@@ -7,49 +7,48 @@ namespace Screens.Hosting.WebTerm
 {
     public class WebTerminal : Terminal
     {
+        public WebTermSession Session { get; }
+
+        //TODO: understand if SetBackColor / SetForeColor is needed on the Terminal interface // used for simple term (no app)
+
+        public WebTerminal(WebTermSession sess)
+        {
+            Session = sess;
+        }
+
         public override void Beep()
         {
-            throw new NotImplementedException();
+            Session.Client.SendAsync("Beep", null);
         }
 
         public override void Clear()
         {
-            throw new NotImplementedException();
+            Session.Client.SendAsync("Clear", null);
         }
 
         public override void HideCursor()
         {
-            throw new NotImplementedException();
-        }
-
-        public override void SetBackGroundColor(ConsoleColor back)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void SetForeGroundColor(ConsoleColor back)
-        {
-            throw new NotImplementedException();
+            Session.Client.SendAsync("HideCursor", null);
         }
 
         public override void SetScreenSize(int width, int height)
         {
-            throw new NotImplementedException();
+            Session.Client.SendAsync("SetScreenSize", new object[] { width, height});
         }
 
         public override void ShowCursor()
         {
-            throw new NotImplementedException();
+            Session.Client.SendAsync("ShowCursor", null);
         }
 
         public override void SubmitChanges(TerminalChanges changes)
         {
-            
+            Session.Client.SendAsync("SubmitChanges", new object[] { changes });
         }
 
         protected override void SetCursorPositionImpl()
         {
-            throw new NotImplementedException();
+            Session.Client.SendAsync("SubmitChanges", new object[] { this.CursorX, this.CursorY });
         }
     }
 }

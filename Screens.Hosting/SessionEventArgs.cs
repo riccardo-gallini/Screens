@@ -11,7 +11,7 @@ namespace Screens.Hosting
         public bool RefuseConnection { get; set; } = false;
         public ISession Session { get; }
 
-        internal SessionEventArgs(ISession session)
+        public SessionEventArgs(ISession session)
         {
             Session = session;
         }

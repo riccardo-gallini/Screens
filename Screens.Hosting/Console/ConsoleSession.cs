@@ -9,7 +9,7 @@ namespace Screens.Hosting.LocalConsole
     {
         public string ConnectionId => Guid.Empty.ToString();
         public IPAddress RemoteAddress => null;
-        public int RemotePort => 0;
+        public int? RemotePort => null;
         public DateTime ConnectionTime { get; }
         public IHost Host { get; }
         public Terminal Terminal {get;}

@@ -74,7 +74,7 @@ namespace Screens.Hosting.Telnet
 
                 if (!e.RefuseConnection)
                 {
-                    session.Connect();
+                    session.Run();
                 }
                 else
                 {

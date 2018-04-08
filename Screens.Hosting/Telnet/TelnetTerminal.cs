@@ -45,7 +45,7 @@ namespace Screens.Hosting.Telnet
             //
         }
 
-        public override void SetBackGroundColor(ConsoleColor back)
+        public void SetBackGroundColor(ConsoleColor back)
         {
             if (!BlackAndWhite) SendToClient(ANSI_Encoder.Set_Attribute_Mode(ANSI_Encoder.From_BackColor(back)));
         }
@@ -55,7 +55,7 @@ namespace Screens.Hosting.Telnet
             SendToClient(ANSI_Encoder.Cursor_Home(CursorY, CursorX));
         }
 
-        public override void SetForeGroundColor(ConsoleColor fore)
+        public void SetForeGroundColor(ConsoleColor fore)
         {
             if (!BlackAndWhite) SendToClient(ANSI_Encoder.Set_Attribute_Mode(ANSI_Encoder.From_ForeColor(fore)));
         }

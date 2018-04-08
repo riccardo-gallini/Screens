@@ -1,15 +1,15 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace Screens.Hosting.WebTerm
 {
-
-
 
     public class WebTermHost : IHost
     {
@@ -17,9 +17,12 @@ namespace Screens.Hosting.WebTerm
         public event SessionConnectionEventHandler SessionConnected = null;
         public event SessionConnectionEventHandler SessionDisconnected = null;
 
+        public IPAddress ListeningOnAddress => throw new NotImplementedException();
+        public int ListeningOnPort => throw new NotImplementedException();
+
         private Dictionary<string, WebTermSession> _sessions = new Dictionary<string, WebTermSession>();
 
-        public IReadOnlyCollection<WebTermSession> Sessions
+        public IReadOnlyCollection<ISession> Sessions
         {
             get
             {
@@ -29,9 +32,9 @@ namespace Screens.Hosting.WebTerm
 
 
         public Action<Terminal> Main { get; set; }
+                
 
         public static readonly WebTermHost Instance = new WebTermHost();
-
         private WebTermHost() {}
 
         public void StartHost()
@@ -40,11 +43,6 @@ namespace Screens.Hosting.WebTerm
 
             BuildWebHost().Run();
         }
-
-        public void StopHost()
-        {
-            throw new NotImplementedException();
-        }
         
         public IWebHost BuildWebHost() =>
             WebHost.CreateDefaultBuilder()
@@ -52,22 +50,22 @@ namespace Screens.Hosting.WebTerm
                    .Build();
 
 
-        internal void _clientConnected(string connectionID)
+        public void StopHost()
         {
-            var sess = new WebTermSession(this, connectionID);
-            _sessions.Add(connectionID, sess);
+        }
+
+
+        internal async Task ClientConnectedAsync(HubConnectionContext connection, IClientProxy client)
+        {
+            var sess = new WebTermSession(this, connection, client);
+            _sessions.Add(sess.ConnectionId, sess);
 
             var e = new SessionEventArgs(sess);
             SessionConnected(this, e);
 
             if (!e.RefuseConnection)
             {
-
-                var term = new WebTerminal(sess);
-                sess.Terminal = term;
-
-                Task.Factory.StartNew(() => Main(term));
-
+                await sess.RunAsync();
             }
             else
             {
@@ -76,26 +74,22 @@ namespace Screens.Hosting.WebTerm
 
         }
 
-        internal void _clientDisconnected(string c)
+        internal void ClientDisconnectedAsync(HubConnectionContext connection)
         {
-            var sess = _sessions[c];
+            var sess = _sessions[connection.ConnectionId];
             sess.Terminal.SendCloseRequest();
 
             var e = new SessionEventArgs(sess);
             SessionDisconnected(this, e);
 
-            _sessions.Remove(c);
+            _sessions.Remove(connection.ConnectionId);
+
         }
 
-        internal void SendToClient(string connectionID, string message)
-        {
-            //byte[] data = Encoding.ASCII.GetBytes(message);
-            //this.Server.Send(conn, data);
-        }
 
-        private void _messageReceived(string connectionID, byte[] data)
+        internal void ProcessKey(string connectionID, KeyInfo key)
         {
-            _sessions[connectionID].DataFromClient(data);
+            _sessions[connectionID].Terminal.ProcessKey(key);
         }
 
     }
