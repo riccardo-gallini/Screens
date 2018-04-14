@@ -98,7 +98,7 @@ Public Class MenuProdottiFiniti
     End Sub
 
     Private Sub Utilita_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        'my_timer.Start()
+        my_timer.Start()
     End Sub
 
     Private Sub btSpostamento_Click(sender As Screens.Button, e As System.EventArgs) Handles btSpostamento.Click
