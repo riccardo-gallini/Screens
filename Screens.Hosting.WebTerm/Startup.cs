@@ -43,7 +43,7 @@ namespace Screens.Hosting.WebTerm
             app.UseStaticFiles(new StaticFileOptions { FileProvider = wwwroot_provider });
 
             // signalR comm ------------------------------------------------------------------------
-            app.UseSignalR(routes => { routes.MapHub<WebTermHub>("/hubs/chat"); });
+            app.UseSignalR(routes => { routes.MapHub<WebTermHub>("/hubs/term"); });
         }
     }
 }

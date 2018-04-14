@@ -17,42 +17,41 @@ namespace Screens.Hosting.WebTerm
                 return webTermHost;
             }
         }
-        public string ConnectionId
+
+        public Terminal Terminal
         {
             get
             {
-                return Connection.ConnectionId;
+                return webTerminal;
             }
         }
 
-        public Terminal Terminal { get; internal set; }
-
-        public IPAddress RemoteAddress => Connection.RemoteIpAddress;
-        public int? RemotePort => Connection.RemotePort;
+        public IPAddress RemoteAddress => null;
+        public int? RemotePort => null;
         public DateTime ConnectionTime { get; }
         
         public IClientProxy Client { get; }
-        public HubConnectionContext Connection { get; }
+        public string ConnectionId { get; }
         
 
         private WebTermHost webTermHost;
         private WebTerminal webTerminal;
 
 
-        internal WebTermSession(WebTermHost h, HubConnectionContext c, IClientProxy client)
+        internal WebTermSession(WebTermHost h, string c, IClientProxy client)
         {
             ConnectionTime = DateTime.Now;
             webTermHost = h;
-            Connection = c;
+            ConnectionId = c;
             Client = client;
         }
 
-        async internal Task RunAsync()
+        internal void RunAsync()
         {
             var term = new WebTerminal(this);
             this.webTerminal = term;
 
-            await Task.Run(() => Host.Main(term));
+            Task.Run(() => Host.Main(term));
         }
 
         public void Kick()

@@ -10,20 +10,20 @@ namespace Screens.Hosting.WebTerm
     {
         public override async Task OnConnectedAsync()
         {
-            var connection = Context.Connection;
-            var client = Clients.Client(connection.ConnectionId);
-
-            await WebTermHost.Instance.ClientConnectedAsync(connection, client);
+            var client = Clients.Caller;
+            var connectionId = Context.ConnectionId;
+            WebTermHost.Instance.ClientConnected(connectionId, client);
+            await Task.CompletedTask;
         }
 
         public override async Task OnDisconnectedAsync(Exception ex)
         {
-            var connection = Context.Connection;
-            WebTermHost.Instance.ClientDisconnectedAsync(connection);
+            var connectionId = Context.ConnectionId;
+            WebTermHost.Instance.ClientDisconnected(connectionId);
             await Task.CompletedTask;
         }
 
-        public async Task SendKey(KeyInfo key)
+        public async Task SendKey(string key)
         {
             var connectionId = Context.ConnectionId;
             WebTermHost.Instance.ProcessKey(connectionId, key);

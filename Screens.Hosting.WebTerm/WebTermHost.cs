@@ -41,7 +41,7 @@ namespace Screens.Hosting.WebTerm
         {
             if (Main == null) throw new InvalidOperationException(" 'Main' was null!");
 
-            BuildWebHost().Run();
+            BuildWebHost().RunAsync();
         }
         
         public IWebHost BuildWebHost() =>
@@ -55,9 +55,9 @@ namespace Screens.Hosting.WebTerm
         }
 
 
-        internal async Task ClientConnectedAsync(HubConnectionContext connection, IClientProxy client)
+        internal void ClientConnected(string connectionId, IClientProxy client)
         {
-            var sess = new WebTermSession(this, connection, client);
+            var sess = new WebTermSession(this, connectionId, client);
             _sessions.Add(sess.ConnectionId, sess);
 
             var e = new SessionEventArgs(sess);
@@ -65,7 +65,7 @@ namespace Screens.Hosting.WebTerm
 
             if (!e.RefuseConnection)
             {
-                await sess.RunAsync();
+                sess.RunAsync();
             }
             else
             {
@@ -74,22 +74,77 @@ namespace Screens.Hosting.WebTerm
 
         }
 
-        internal void ClientDisconnectedAsync(HubConnectionContext connection)
+        internal void ClientDisconnected(string connectionId)
         {
-            var sess = _sessions[connection.ConnectionId];
+            var sess = _sessions[connectionId];
             sess.Terminal.SendCloseRequest();
 
             var e = new SessionEventArgs(sess);
             SessionDisconnected(this, e);
 
-            _sessions.Remove(connection.ConnectionId);
+            _sessions.Remove(connectionId);
 
         }
 
 
-        internal void ProcessKey(string connectionID, KeyInfo key)
+        internal void ProcessKey(string connectionID, string key)
         {
-            _sessions[connectionID].Terminal.ProcessKey(key);
+            _sessions[connectionID].Terminal.ProcessKey(keyInfo(key));
+        }
+
+        private KeyInfo keyInfo(string browser_key)
+        {
+            var k = new KeyInfo();
+
+            if (browser_key.Length==1)
+            {
+                k.KeyChar = browser_key[0];
+                k.SpecialKey = SpecialKey.None;
+            }
+            else
+            {
+                k.KeyChar = ' ';
+                k.SpecialKey = specialKey(browser_key);
+            }
+            return k;
+        }
+
+        private SpecialKey specialKey(string k)
+        {
+            switch (k)
+            {
+                case "ArrowDown": return SpecialKey.DownArrow;
+                case "ArrowUp": return SpecialKey.UpArrow;
+                case "ArrowRight": return SpecialKey.RightArrow;
+                case "ArrowLeft": return SpecialKey.LeftArrow;
+                case "PageDown": return SpecialKey.PageDown;
+                case "PageUp": return SpecialKey.PageUp;
+                case "Home": return SpecialKey.Home;
+                case "End": return SpecialKey.End;
+                case "Tab": return SpecialKey.Tab;
+                case "Enter": return SpecialKey.Enter;
+                case "Escape": return SpecialKey.Escape;
+                case "Delete": return SpecialKey.Delete;
+                case "Backspace": return SpecialKey.Backspace;
+                //case ConsoleKey.F1: return SpecialKey.F1;
+                //case ConsoleKey.F2: return SpecialKey.F2;
+                //case ConsoleKey.F3: return SpecialKey.F3;
+                //case ConsoleKey.F4: return SpecialKey.F4;
+                //case ConsoleKey.F5: return SpecialKey.F5;
+                //case ConsoleKey.F6: return SpecialKey.F6;
+                //case ConsoleKey.F7: return SpecialKey.F7;
+                //case ConsoleKey.F8: return SpecialKey.F8;
+                //case ConsoleKey.F9: return SpecialKey.F9;
+                //case ConsoleKey.F10: return SpecialKey.F10;
+                //case ConsoleKey.F11: return SpecialKey.F11;
+                //case ConsoleKey.F12: return SpecialKey.F12;
+                default: return SpecialKey.None;
+
+
+
+
+                    
+            }
         }
 
     }

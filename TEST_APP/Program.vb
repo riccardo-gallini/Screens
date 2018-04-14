@@ -4,6 +4,7 @@ Imports System.Net
 Imports Screens
 Imports Screens.Hosting
 Imports Screens.Hosting.Telnet
+Imports Screens.Hosting.WebTerm
 
 Module Program
     Sub Main(args As String())
@@ -19,7 +20,18 @@ Module Program
 
         'host.StartHost()
 
-        Dim host = New TelnetHost()
+        'Dim host = New TelnetHost()
+        'AddHandler host.SessionConnected, AddressOf connect
+        'AddHandler host.SessionDisconnected, AddressOf disconnect
+
+        'host.Main = Sub(term)
+        '                Dim application = New Application(term)
+        '                application.ScreenSize = New Size(29, 20)
+        '                application.BlackAndWhite = False
+        '                application.Run(New MenuProdottiFiniti())
+        '            End Sub
+
+        Dim host = WebTermHost.Instance
         AddHandler host.SessionConnected, AddressOf connect
         AddHandler host.SessionDisconnected, AddressOf disconnect
 
@@ -42,11 +54,11 @@ Module Program
 
     End Sub
 
-    Private Sub connect(h As TelnetHost, e As SessionEventArgs)
+    Private Sub connect(h As IHost, e As SessionEventArgs)
         Console.WriteLine("Session connected from IP {0}", e.Session.RemoteAddress)
     End Sub
 
-    Private Sub disconnect(h As TelnetHost, e As SessionEventArgs)
+    Private Sub disconnect(h As IHost, e As SessionEventArgs)
         Console.WriteLine("Session disconnected at IP {0}", e.Session.RemoteAddress)
     End Sub
 

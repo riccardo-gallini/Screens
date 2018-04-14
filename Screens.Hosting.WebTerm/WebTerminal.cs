@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.SignalR;
 
 namespace Screens.Hosting.WebTerm
 {
@@ -18,37 +19,37 @@ namespace Screens.Hosting.WebTerm
 
         public override void Beep()
         {
-            Session.Client.SendAsync("Beep", null);
+            Session.Client.SendAsync("Beep");
         }
 
         public override void Clear()
         {
-            Session.Client.SendAsync("Clear", null);
+            Session.Client.SendAsync("Clear");
         }
 
         public override void HideCursor()
         {
-            Session.Client.SendAsync("HideCursor", null);
+            Session.Client.SendAsync("HideCursor");
         }
 
         public override void SetScreenSize(int width, int height)
         {
-            Session.Client.SendAsync("SetScreenSize", new object[] { width, height});
+            Session.Client.SendAsync("SetScreenSize", width, height);
         }
 
         public override void ShowCursor()
         {
-            Session.Client.SendAsync("ShowCursor", null);
+            Session.Client.SendAsync("ShowCursor");
         }
 
         public override void SubmitChanges(TerminalChanges changes)
         {
-            Session.Client.SendAsync("SubmitChanges", new object[] { changes });
+            Session.Client.SendAsync("SubmitChanges", changes);
         }
 
         protected override void SetCursorPositionImpl()
         {
-            Session.Client.SendAsync("SubmitChanges", new object[] { this.CursorX, this.CursorY });
+            Session.Client.SendAsync("SetCursorPosition", this.CursorX, this.CursorY);
         }
     }
 }
