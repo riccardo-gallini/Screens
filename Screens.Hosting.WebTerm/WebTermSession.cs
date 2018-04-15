@@ -51,7 +51,8 @@ namespace Screens.Hosting.WebTerm
             var term = new WebTerminal(this);
             this.webTerminal = term;
 
-            Task.Run(() => Host.Main(term));
+            var t = Task.Run(() => Host.Main(term));
+
         }
 
         public void Kick()

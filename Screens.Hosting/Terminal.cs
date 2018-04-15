@@ -60,7 +60,12 @@ namespace Screens.Hosting
 
         public void FlushBuffer()
         {
-            BufferManager.FlushBuffer();
+            //get changes in buffer and consolidate them
+            var changes = BufferManager.GetChanges();
+            BufferManager.AcceptChanges();
+
+            //call Terminal concrete implementation that sends changes to client
+            this.SubmitChanges(changes);
         }
 
         public void ProcessKey(KeyInfo key)

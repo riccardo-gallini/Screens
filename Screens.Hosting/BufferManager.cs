@@ -18,12 +18,11 @@ namespace Screens.Hosting
             Terminal = terminal;
         }
 
-        public void FlushBuffer()
+        public TerminalChanges GetChanges()
         {
 
-            // submit changed lines in buffer to the context (console or terminal)
-            // in an optimized way
-
+            // get changed lines in buffer to the context (console or terminal)
+            
             var changes = new TerminalChanges();
 
             var xs = 0;
@@ -61,10 +60,14 @@ namespace Screens.Hosting
                 ys += 1;
             }
 
-            Terminal.SubmitChanges(changes);
+            return changes;
+        }
 
+        public void AcceptChanges()
+        {
             LastBuffer = (Buffer)CurrentBuffer.Clone();
         }
+
 
         private static bool IsLineChanged(Buffer a, Buffer b, int y)
         {
