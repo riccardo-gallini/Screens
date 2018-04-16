@@ -203,7 +203,6 @@ function setup()
 {
     var termControl = document.getElementById("term");
     var connection = new signalR.HubConnection("/hubs/term");
-    connection.logging = true;
 
     var Term = new Terminal(connection, termControl);
     connection.start();

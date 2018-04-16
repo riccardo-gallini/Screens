@@ -126,18 +126,18 @@ namespace Screens.Hosting.WebTerm
                 case "Escape": return SpecialKey.Escape;
                 case "Delete": return SpecialKey.Delete;
                 case "Backspace": return SpecialKey.Backspace;
-                //case ConsoleKey.F1: return SpecialKey.F1;
-                //case ConsoleKey.F2: return SpecialKey.F2;
-                //case ConsoleKey.F3: return SpecialKey.F3;
-                //case ConsoleKey.F4: return SpecialKey.F4;
-                //case ConsoleKey.F5: return SpecialKey.F5;
-                //case ConsoleKey.F6: return SpecialKey.F6;
-                //case ConsoleKey.F7: return SpecialKey.F7;
-                //case ConsoleKey.F8: return SpecialKey.F8;
-                //case ConsoleKey.F9: return SpecialKey.F9;
-                //case ConsoleKey.F10: return SpecialKey.F10;
-                //case ConsoleKey.F11: return SpecialKey.F11;
-                //case ConsoleKey.F12: return SpecialKey.F12;
+                case "F1": return SpecialKey.F1;
+                case "F2": return SpecialKey.F2;
+                case "F3": return SpecialKey.F3;
+                case "F4": return SpecialKey.F4;
+                case "F5": return SpecialKey.F5;
+                case "F6": return SpecialKey.F6;
+                case "F7": return SpecialKey.F7;
+                case "F8": return SpecialKey.F8;
+                case "F9": return SpecialKey.F9;
+                case "F10": return SpecialKey.F10;
+                case "F11": return SpecialKey.F11;
+                case "F12": return SpecialKey.F12;
                 default: return SpecialKey.None;
 
 
