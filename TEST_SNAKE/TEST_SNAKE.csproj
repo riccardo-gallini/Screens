@@ -1,14 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Screens.Hosting\Screens.Hosting.csproj" />
     <ProjectReference Include="..\Screens.Widgets\Screens.Widgets.csproj" />
-    <ProjectReference Include="..\TEST_SNAKE\TEST_SNAKE.csproj" />
   </ItemGroup>
 
 </Project>
