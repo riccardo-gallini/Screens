@@ -23,7 +23,7 @@ namespace Screens
         private void _timerCallBack()
         {
             var app = FindForm().Application;
-            app.SendTimerTick(this);
+            app?.SendTimerTick(this);
         }
 
         public int Interval { get; set; }
