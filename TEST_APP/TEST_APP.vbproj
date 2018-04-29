@@ -14,6 +14,7 @@
     <ProjectReference Include="..\Screens.Hosting.WebTerm\Screens.Hosting.WebTerm.csproj" />
     <ProjectReference Include="..\Screens.Hosting\Screens.Hosting.csproj" />
     <ProjectReference Include="..\Screens.Widgets\Screens.Widgets.csproj" />
+    <ProjectReference Include="..\TEST_SNAKE\TEST_SNAKE.csproj" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">

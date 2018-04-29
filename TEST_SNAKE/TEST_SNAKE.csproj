@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Screens.Hosting\Screens.Hosting.csproj" />
+    <ProjectReference Include="..\Screens.Widgets\Screens.Widgets.csproj" />
+  </ItemGroup>
+
+</Project>
