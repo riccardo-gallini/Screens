@@ -32,27 +32,34 @@ Module Program
         '            End Sub
 
         Dim host = WebTermHost.Instance
+        'Dim host = New LocalConsole.ConsoleHost()
         AddHandler host.SessionConnected, AddressOf connect
         AddHandler host.SessionDisconnected, AddressOf disconnect
+
+        'host.Main = Sub(term)
+        '                Dim application = New Application(term)
+        '                application.ScreenSize = New Size(29, 20)
+        '                application.BlackAndWhite = False
+        '                application.Run(New MenuProdottiFiniti())
+        '            End Sub
 
         host.Main = Sub(term)
                         Dim application = New Application(term)
                         application.ScreenSize = New Size(29, 20)
                         application.BlackAndWhite = False
-                        application.Run(New MenuProdottiFiniti())
+                        application.Run(New TEST_SNAKE.SnakeWorld())
                     End Sub
-
 
         host.StartHost()
 
-        Console.WriteLine("SERVER RUNNING!!")
+                        Console.WriteLine("SERVER RUNNING!!")
 
-        Do
-            Threading.Thread.Sleep(20000)
+                        Do
+                            Threading.Thread.Sleep(20000)
 
-        Loop
+                        Loop
 
-    End Sub
+                    End Sub
 
     Private Sub connect(h As IHost, e As SessionEventArgs)
         Console.WriteLine("Session connected from IP {0}", e.Session.RemoteAddress)

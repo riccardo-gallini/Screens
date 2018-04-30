@@ -7,9 +7,13 @@ namespace TEST_SNAKE
     public class SnakeWorld : Form
     {
         private Timer gameTimer;
-        private SnakeObject theSnake;
+        private Random rndGenerator = new Random();
 
-        public SnakeWorld()
+        private SnakeObject theSnake;
+        private Point food;
+        
+
+        private void InitializeComponents()
         {
             this.Name = "SnakeWorld";
             this.Text = "SNAKE GAME";
@@ -20,18 +24,20 @@ namespace TEST_SNAKE
             this.KeyPress += KeyPressed;
             this.KeyPreview = true;
 
-            theSnake = new SnakeObject(this);
-            theSnake.Body.Add(new Point(1, 1));
-            theSnake.Body.Add(new Point(1, 2));
-            theSnake.Body.Add(new Point(1, 3));
-            theSnake.Body.Add(new Point(1, 4));
-            theSnake.Direction = Direction.Down;
-
             gameTimer = new Timer();
             gameTimer.Name = "gameTimer";
-            gameTimer.Interval = 500;
+            gameTimer.Interval = 250;
             gameTimer.Tick += GameStep;
             this.Controls.Add(gameTimer);
+        }
+
+        public SnakeWorld()
+        {
+            InitializeComponents();
+
+            theSnake = new SnakeObject(this);
+            theSnake.Init(Direction.Down, (1, 1), (1, 2), (1, 3), (1, 4), (1, 5));
+            food = NewFood();
 
             gameTimer.Start();
         }
@@ -39,7 +45,33 @@ namespace TEST_SNAKE
         private void GameStep(Control sender, EventArgs e)
         {
             var last_point = theSnake.Step();
+
+            if (last_point==food)
+            {
+                theSnake.AddTip();
+                food = NewFood();
+            }
+                
+
             this.Invalidate();
+        }
+
+        private Point NewFood()
+        {
+            int x;
+            int y;
+
+            again:
+
+            //return a random point inside world area
+            x = 1+rndGenerator.Next(this.Width-1);
+            y = 1+rndGenerator.Next(this.Height-1);
+
+            //check if it lies over snake body
+            foreach (var b in theSnake.Body)
+                if (b.X == x && b.Y == y) goto again;
+
+            return new Point(x, y);
         }
 
         private void KeyPressed(Control sender, KeyPressEventArgs e)
@@ -47,24 +79,34 @@ namespace TEST_SNAKE
             switch(e.SpecialKey)
             {
                 case SpecialKey.UpArrow:
-                    theSnake.Direction = Direction.Up;
+                    theSnake.SetDirection(Direction.Up);
                     e.Handled = true;
                     break;
 
                 case SpecialKey.DownArrow:
-                    theSnake.Direction = Direction.Down;
+                    theSnake.SetDirection(Direction.Down);
                     e.Handled = true;
                     break;
 
                 case SpecialKey.LeftArrow:
-                    theSnake.Direction = Direction.Left;
+                    theSnake.SetDirection(Direction.Left);
                     e.Handled = true;
                     break;
 
                 case SpecialKey.RightArrow:
-                    theSnake.Direction = Direction.Right;
+                    theSnake.SetDirection(Direction.Right);
                     e.Handled = true;
                     break;
+            }
+
+            //toggle game run/pause
+            if (e.KeyChar==' ')
+            {
+                gameTimer.Enabled = !gameTimer.Enabled;
+                if (gameTimer.Enabled == false)
+                    this.Text = "SNAKE GAME [Paused]";
+                else
+                    this.Text = "SNAKE GAME";
             }
         }
 
@@ -72,11 +114,16 @@ namespace TEST_SNAKE
         {
             base.OnPaint(e);
 
-            foreach (var p in theSnake.Body)
+            //paint snake
+            foreach (var point in theSnake.Body)
             {
-                var rect = new Rectangle(p.X, p.Y, 1, 1);
+                var rect = new Rectangle(point.X, point.Y, 1, 1);
                 e.Buffer.DrawString(" ", rect, ConsoleColor.White, ConsoleColor.Blue);
             }
+
+            //paint food
+            var rectf = new Rectangle(food.X, food.Y, 1, 1);
+            e.Buffer.DrawString("+", rectf, ConsoleColor.White, ConsoleColor.Red);
 
         }
 

@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Screens.Widgets", "Screens.
 EndProject
 Project("{778DAE3C-4631-46EA-AA77-85C1314464D9}") = "TEST_APP", "TEST_APP\TEST_APP.vbproj", "{D4098352-7BD7-47FE-8F8B-3556E973A2E3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Screens.Hosting.WebTerm", "Screens.Hosting.WebTerm\Screens.Hosting.WebTerm.csproj", "{906A0306-D899-4EF6-B2B4-8E3CEDD211B8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Screens.Hosting.WebTerm", "Screens.Hosting.WebTerm\Screens.Hosting.WebTerm.csproj", "{906A0306-D899-4EF6-B2B4-8E3CEDD211B8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TEST_SNAKE", "TEST_SNAKE\TEST_SNAKE.csproj", "{92B8B953-AC6E-4EDD-B1B6-7E216CAA2B47}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{906A0306-D899-4EF6-B2B4-8E3CEDD211B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{906A0306-D899-4EF6-B2B4-8E3CEDD211B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{906A0306-D899-4EF6-B2B4-8E3CEDD211B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92B8B953-AC6E-4EDD-B1B6-7E216CAA2B47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92B8B953-AC6E-4EDD-B1B6-7E216CAA2B47}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92B8B953-AC6E-4EDD-B1B6-7E216CAA2B47}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92B8B953-AC6E-4EDD-B1B6-7E216CAA2B47}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
