@@ -103,7 +103,7 @@ namespace Screens.Hosting.WebTerm
             }
             else
             {
-                k.KeyChar = ' ';
+                k.KeyChar = (char)0;
                 k.SpecialKey = specialKey(browser_key);
             }
             return k;
