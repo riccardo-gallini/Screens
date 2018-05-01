@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Text;
 
-namespace Screens.Hosting
+namespace Screens.Hosting.LocalConsole
 {
-    internal class ConsoleTerminal : Terminal
+    public class ConsoleTerminal : Terminal
     {
         public override void Beep()
         {
@@ -24,7 +24,7 @@ namespace Screens.Hosting
             Console.CursorVisible = false;
         }
         
-        public override void SetBackGroundColor(ConsoleColor back)
+        public void SetBackGroundColor(ConsoleColor back)
         {
             if (!BlackAndWhite) Console.BackgroundColor = back;
         }
@@ -34,7 +34,7 @@ namespace Screens.Hosting
             Console.SetCursorPosition(CursorX, CursorY);
         }
 
-        public override void SetForeGroundColor(ConsoleColor fore)
+        public void SetForeGroundColor(ConsoleColor fore)
         {
             if (!BlackAndWhite) Console.ForegroundColor = fore;
         }
@@ -49,18 +49,26 @@ namespace Screens.Hosting
         {
             Console.CursorVisible = true;
         }
-               
-        public override void Write(string s)
+
+        public override void SubmitChanges(TerminalChanges changes)
+        {
+            foreach (var line in changes.Lines)
+                foreach (var span in line.Spans)
+                    Write(span.Text, span.ForeColor, span.BackColor, span.X, line.Y);
+        }
+        
+        public void Write(string s)
         {
             Console.Write(s);
         }
 
-        public override void Write(string s, ConsoleColor fore, ConsoleColor back, int x, int y)
+        public void Write(string s, ConsoleColor fore, ConsoleColor back, int x, int y)
         {
             SetCursorPosition(x, y);
             SetForeGroundColor(fore);
             SetBackGroundColor(back);
             Write(s);
         }
+               
     }
 }

@@ -4,14 +4,16 @@ using System.Text;
 
 namespace Screens.Hosting
 {
+    public delegate void SessionConnectionEventHandler(IHost h, SessionEventArgs e);
+
     public class SessionEventArgs : EventArgs
     {
         public bool RefuseConnection { get; set; } = false;
-        public Session Session { get; }
+        public ISession Session { get; }
 
-        internal SessionEventArgs(Session sess)
+        public SessionEventArgs(ISession session)
         {
-            Session = sess;
+            Session = session;
         }
     }
 }

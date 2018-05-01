@@ -31,13 +31,11 @@ namespace Screens.Hosting
         }
 
         protected abstract void SetCursorPositionImpl();
-        public abstract void SetBackGroundColor(ConsoleColor back);
-        public abstract void SetForeGroundColor(ConsoleColor back);
+
         public abstract void HideCursor();
         public abstract void ShowCursor();
-
-        public abstract void Write(string s);
-        public abstract void Write(string s, ConsoleColor fore, ConsoleColor back, int x, int y);
+                
+        public abstract void SubmitChanges(TerminalChanges changes);
         public abstract void Beep();
 
         public BufferManager BufferManager { get; }
@@ -62,10 +60,15 @@ namespace Screens.Hosting
 
         public void FlushBuffer()
         {
-            BufferManager.FlushBuffer();
+            //get changes in buffer and consolidate them
+            var changes = BufferManager.GetChanges();
+            BufferManager.AcceptChanges();
+
+            //call Terminal concrete implementation that sends changes to client
+            this.SubmitChanges(changes);
         }
 
-        public void SendKey(KeyInfo key)
+        public void ProcessKey(KeyInfo key)
         {
             KeyPressed?.Invoke(key);
         }

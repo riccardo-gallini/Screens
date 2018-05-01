@@ -4,27 +4,28 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Text;
 
-namespace Screens.Hosting
+namespace Screens.Hosting.Telnet
 {
     public class TelnetTerminal : Terminal
     {
         public ANSI_Decoder ANSI_Decoder { get; }
-        public Session Session { get; }
+        public TelnetSession Session { get; }
         
-        internal TelnetTerminal(Session session)
+        internal TelnetTerminal(TelnetSession session)
         {
             Session = session;
 
             ANSI_Decoder = new ANSI_Decoder();
-            ANSI_Decoder.KeyReady = (key) => this.SendKey(key);
+            ANSI_Decoder.KeyReady = (key) => this.ProcessKey(key);
         }
 
-        private void SendToClient(string msg)
+        private void SendToClient(string message)
         {
-            Session.SendToClient(msg);
+            byte[] data = Encoding.ASCII.GetBytes(message);
+            Session.Send(data);
         }
 
-        internal void ProcessData(byte[] data)
+        internal void ProcessRawData(byte[] data)
         {
             ANSI_Decoder.Decode(data);
         }
@@ -44,7 +45,7 @@ namespace Screens.Hosting
             //
         }
 
-        public override void SetBackGroundColor(ConsoleColor back)
+        public void SetBackGroundColor(ConsoleColor back)
         {
             if (!BlackAndWhite) SendToClient(ANSI_Encoder.Set_Attribute_Mode(ANSI_Encoder.From_BackColor(back)));
         }
@@ -54,7 +55,7 @@ namespace Screens.Hosting
             SendToClient(ANSI_Encoder.Cursor_Home(CursorY, CursorX));
         }
 
-        public override void SetForeGroundColor(ConsoleColor fore)
+        public void SetForeGroundColor(ConsoleColor fore)
         {
             if (!BlackAndWhite) SendToClient(ANSI_Encoder.Set_Attribute_Mode(ANSI_Encoder.From_ForeColor(fore)));
         }
@@ -70,13 +71,20 @@ namespace Screens.Hosting
         {
             //
         }
-        
-        public override void Write(string s)
+
+        public override void SubmitChanges(TerminalChanges changes)
+        {
+            foreach(var line in changes.Lines)
+                foreach(var span in line.Spans)
+                    Write(span.Text, span.ForeColor, span.BackColor, span.X, line.Y);
+        }
+
+        public void Write(string s)
         {
             SendToClient(s);
         }
 
-        public override void Write(string s, ConsoleColor fore, ConsoleColor back, int x, int y)
+        public void Write(string s, ConsoleColor fore, ConsoleColor back, int x, int y)
         {
             SetForeGroundColor(fore);
             SetBackGroundColor(back);

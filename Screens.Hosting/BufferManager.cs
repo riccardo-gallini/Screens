@@ -18,24 +18,22 @@ namespace Screens.Hosting
             Terminal = terminal;
         }
 
-        public void FlushBuffer()
+        public TerminalChanges GetChanges()
         {
 
-            // send changed lines in buffer to the context (console or terminal)
-            // in an optimized way
+            // get changed lines in buffer to the context (console or terminal)
+            
+            var changes = new TerminalChanges();
 
             var xs = 0;
             var ys = 0;
-
-
-            // scrittura ottimizzata del buffer al terminale
-            // a) manda una riga solo se è cambiata
-            // b) manda la riga a 'pezzi' scrivendo stringhe intere a pari colore
 
             while (ys < CurrentBuffer.Height)
             {
                 if (IsLineChanged(CurrentBuffer, LastBuffer, ys))
                 {
+                    var line = changes.AddLine(ys);
+
                     xs = 0;
                     var str = new System.Text.StringBuilder();
                     var cur_fore = CurrentBuffer[xs, ys].ForeColor;
@@ -47,7 +45,7 @@ namespace Screens.Hosting
                         var buf_char = CurrentBuffer[xs, ys];
                         if (buf_char.ForeColor != cur_fore || buf_char.BackColor != cur_back)
                         {
-                            Terminal.Write(str.ToString(), cur_fore, cur_back, cur_x, ys);
+                            line.AddSpan(str.ToString(), cur_fore, cur_back, cur_x);
                             str = new System.Text.StringBuilder();
                             cur_fore = buf_char.ForeColor;
                             cur_back = buf_char.BackColor;
@@ -57,13 +55,19 @@ namespace Screens.Hosting
 
                         xs += 1;
                     }
-                    Terminal.Write(str.ToString(), cur_fore, cur_back, cur_x, ys);
+                    line.AddSpan(str.ToString(), cur_fore, cur_back, cur_x);
                 }
                 ys += 1;
             }
 
+            return changes;
+        }
+
+        public void AcceptChanges()
+        {
             LastBuffer = (Buffer)CurrentBuffer.Clone();
         }
+
 
         private static bool IsLineChanged(Buffer a, Buffer b, int y)
         {

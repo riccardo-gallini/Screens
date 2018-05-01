@@ -1,15 +1,33 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Net;
 using System.Threading.Tasks;
 
-namespace Screens.Hosting
+namespace Screens.Hosting.LocalConsole
 {
     public class ConsoleHost : IHost
     {
 
+        public IPAddress ListeningOnAddress => null;
+        public int ListeningOnPort => 0;
         public Action<Terminal> Main { get; set; }
-        
+
+        public event SessionConnectionEventHandler SessionConnected;
+        public event SessionConnectionEventHandler SessionDisconnected;
+
+        public IReadOnlyCollection<ISession> Sessions
+        {
+            get
+            {
+                return new ReadOnlyCollection<ConsoleSession>(_sessions);
+            }
+        }
+
         private bool cont;
         private Task console_listener;
+        private ConsoleSession fakeSession;
+        private List<ConsoleSession> _sessions = new List<ConsoleSession>();
 
         public void StartHost()
         {
@@ -17,23 +35,38 @@ namespace Screens.Hosting
 
             var terminal = new ConsoleTerminal();
 
+            fakeSession = new ConsoleSession(this, terminal);
+            _sessions.Add(fakeSession);
+
             cont = true;
 
-            console_listener = 
-                Task.Factory.StartNew(
-                    () =>
-                    {
-                        while (cont)
+            var e = new SessionEventArgs(fakeSession);
+            SessionDisconnected(this, e);
+
+            if (e.RefuseConnection==false)
+            {
+                console_listener =
+                    Task.Run(
+                        () =>
                         {
-                            var win32_console_key = Console.ReadKey();
-                            terminal.SendKey(keyInfo(win32_console_key));
+                            while (cont)
+                            {
+                                var win32_console_key = Console.ReadKey();
+                                terminal.ProcessKey(keyInfo(win32_console_key));
+                            }
                         }
-                    }
-                
-            );
-                        
-            Main(terminal);
-            terminal.SendCloseRequest();
+
+                );
+
+                Main(terminal);
+                terminal.SendCloseRequest();
+            }
+            else
+            {
+                fakeSession.Kick();
+            }
+            SessionDisconnected(this, new SessionEventArgs(fakeSession));
+
         }
 
         public void StopHost()
