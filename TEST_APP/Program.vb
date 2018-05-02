@@ -11,7 +11,7 @@ Module Program
 
         'Dim host = WebTermHost.Instance
 
-        'host.Main = Sub(term)
+        'host.Main = Sub(term) 
         '                Dim application = New Application(term)
         '                application.ScreenSize = New Size(29, 20)
         '                application.BlackAndWhite = False
